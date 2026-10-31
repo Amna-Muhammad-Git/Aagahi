@@ -44,6 +44,7 @@ Do not commit local `.env` files. The frontend must work without an AI key. Use 
 | GET | `/api/samples` | Load the three fake bills for sample selection and offline demo content |
 | GET | `/api/glossary` | Return the 15 glossary entries for API clients |
 | GET | `/api/guides` | Return the guide library for API clients |
+| GET | `/api/support/questions` | Return reviewed English/Urdu question suggestions for the support assistant |
 | POST | `/api/extract-bill` | Submit a sample ID or a bill upload |
 | POST | `/api/explain-screen` | Submit one of the cached screenshot IDs or an uploaded screenshot |
 | POST | `/api/ask-about-upload` | Ask a question about a selected bill/screenshot or uploaded file (live mode for arbitrary questions; curated cached questions offline) |
@@ -53,7 +54,7 @@ All routes use the base URL above. Uploads use `FormData` with the field name `f
 
 Import `guides.json` and `glossary.json` from `src/data/` into the frontend bundle. Do not fetch them before rendering required content: guide navigation, glossary lookup, and search must work without a backend connection. The matching GET routes are available for API consumers and consistency checks. Search locally across English/Urdu titles and `search_terms`; avoid a remote search/indexing service.
 
-The support-chat JSON request is `{ "message": "How do I send a photo?", "guide_id": "whatsapp-send-photo", "language": "en" }`. `guide_id` and `language` are optional; language is `en` or `ur`. The response is `{ "reply": "...", "related_guide_ids": [], "mode": "cached" | "live" }`. There is no separate voice API route for the first version: use browser speech recognition, display the transcript for correction, send it as `message`, and optionally read the visible response aloud using speech synthesis.
+The support-chat JSON request is `{ "message": "How do I send a photo?", "guide_id": "whatsapp-send-photo", "language": "en" }`. `guide_id` and `language` are optional; language is `en` or `ur`. The response is `{ "reply": "...", "related_guide_ids": [], "mode": "cached" }`; unsupported questions return `503 mode_unavailable`. This first backend implementation uses reviewed FAQ entries only, with conservative matching. There is no separate voice API route: use browser speech recognition, display the transcript for correction, send it as `message`, and optionally read the visible response aloud using speech synthesis.
 
 For responsiveness, acknowledge taps and microphone activation immediately, keep navigation/guides/cached examples local, and show a pending state for live requests. Never leave a pending state indefinitely; handle safe API errors and let the user retry or use a guide. Live network/AI latency cannot be eliminated or guaranteed.
 
@@ -74,6 +75,9 @@ The sample list and extraction endpoint use the same bill fields:
   "account_number": "••••1234",
   "previous_balance": { "value": 0, "currency": "PKR" },
   "late_fee": null,
+  "suggested_questions": [
+    { "id": "amount-due-meaning", "question": "What does amount due mean?" }
+  ],
   "explanations": {
     "provider": "The company that sent this bill.",
     "amount_due": "The amount the bill says is due. Check the original bill before paying.",
@@ -115,6 +119,9 @@ Urdu values are included in the current glossary; retain English fallback for an
     "Tap the send button only if you want to share it."
   ],
   "confidence": "high",
+  "suggested_questions": [
+    { "id": "live-location-meaning", "question": "What is live location?" }
+  ],
   "safety_note": "Never share a password, one-time code (OTP), or PIN shown on a screen.",
   "mode": "cached"
 }
@@ -124,7 +131,7 @@ Show the 3–5 steps clearly, include the safety note, and be honest when the he
 
 ### Ask about a bill or screenshot
 
-Allow the user to select/upload a bill, photo, or screenshot and ask a question about its visible content. Use suggested questions for cached samples so this path has a reliable offline demo. For example, submit JSON `{ "sample_id": "electricity-001", "question": "What does previous balance mean?" }` or multipart fields `file` and `question` for an uploaded file.
+Allow the user to select/upload a bill, photo, or screenshot and ask a question about its visible content. Use suggested questions returned with cached samples/screens so this path has a reliable offline demo. For example, submit JSON `{ "sample_id": "electricity-001", "question_id": "amount-due-meaning", "question": "What does amount due mean?" }` or multipart fields `file` and `question` for an uploaded file. Send the stable `question_id` for a suggested question; arbitrary questions require live mode.
 
 ```json
 {
@@ -144,12 +151,14 @@ Errors have a stable code, usually `{ "error": "unreadable", "message": "We coul
 | Error code | Suggested UI behavior |
 |---|---|
 | `missing_input` | Ask the user to choose a sample or file |
+| `missing_question` | Ask the user to choose or type a question |
 | `invalid_file_type` | Explain accepted formats: PDF, JPG, PNG |
 | `empty_file` | Ask the user to choose a file that contains content |
 | `conflicting_input` | Ask the user to choose either a sample or an upload |
 | `invalid_upload_field` | Ask the user to upload one file using the file control |
 | `invalid_upload` | Ask the user to check the upload and retry |
 | `file_too_large` | Explain the 5 MB limit and offer retry |
+| `question_too_long` | Ask the user to shorten the question |
 | `sample_not_found` | Show a friendly unavailable-sample message |
 | `unreadable` | Offer a retry with a clearer image or sample |
 | `mode_unavailable` | Explain live analysis is unavailable and offer a cached sample |
