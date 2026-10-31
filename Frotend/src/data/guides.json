@@ -1,0 +1,265 @@
+[
+  {
+    "id": "whatsapp-send-message",
+    "platform": "whatsapp",
+    "category": "messages",
+    "title": "Send a message",
+    "title_ur": "پیغام بھیجیں",
+    "summary": "Write and send a text message to someone you know.",
+    "search_terms": ["text", "chat", "message", "لکھیں", "پیغام"],
+    "steps": [
+      { "title": "Open WhatsApp", "instruction": "Find and open WhatsApp on your phone." },
+      { "title": "Open the chat", "instruction": "Tap the name of the person you want to message. Check the name at the top." },
+      { "title": "Write your message", "instruction": "Tap the message box near the bottom and type your message." },
+      { "title": "Review it", "instruction": "Read the message once to check that it says what you mean." },
+      { "title": "Send it", "instruction": "Tap the send arrow. The message is sent only after you tap it." }
+    ]
+  },
+  {
+    "id": "whatsapp-reply-message",
+    "platform": "whatsapp",
+    "category": "messages",
+    "title": "Reply to a message",
+    "title_ur": "پیغام کا جواب دیں",
+    "summary": "Reply to one message in a chat so the other person knows what you mean.",
+    "search_terms": ["reply", "respond", "جواب"],
+    "steps": [
+      { "title": "Open the chat", "instruction": "Open the WhatsApp chat that contains the message." },
+      { "title": "Choose the message", "instruction": "Touch and hold the message you want to answer." },
+      { "title": "Choose Reply", "instruction": "Tap Reply when the menu appears. The selected message should appear above the typing box." },
+      { "title": "Write your answer", "instruction": "Tap the typing box and write your reply." },
+      { "title": "Send", "instruction": "Check the reply, then tap the send arrow." }
+    ]
+  },
+  {
+    "id": "whatsapp-send-voice-message",
+    "platform": "whatsapp",
+    "category": "messages",
+    "title": "Send a voice message",
+    "title_ur": "آواز کا پیغام بھیجیں",
+    "summary": "Record a short voice message and send it in a chat.",
+    "search_terms": ["voice note", "audio message", "record", "آواز", "ریکارڈ"],
+    "steps": [
+      { "title": "Open the chat", "instruction": "Open the chat with the person you want to contact." },
+      { "title": "Find the microphone", "instruction": "Look beside the message box for the microphone icon. If you see a camera or plus icon instead, find the microphone in the attachment or message controls." },
+      { "title": "Start recording", "instruction": "Press and hold the microphone. If your phone asks for microphone permission, allow it only if you want to record." },
+      { "title": "Speak clearly", "instruction": "Say your message close to the phone. Keep it short and pause if you need to." },
+      { "title": "Review or cancel", "instruction": "If a preview is shown, listen to it. Use the delete or cancel control if you do not want to send it." },
+      { "title": "Send", "instruction": "Release the microphone or tap the send control, depending on what your screen shows." }
+    ]
+  },
+  {
+    "id": "whatsapp-send-photo",
+    "platform": "whatsapp",
+    "category": "photos-and-files",
+    "title": "Send a photo or file",
+    "title_ur": "تصویر یا فائل بھیجیں",
+    "summary": "Choose a photo or document and send it to a WhatsApp chat.",
+    "search_terms": ["picture", "document", "attachment", "photo", "فائل", "تصویر"],
+    "steps": [
+      { "title": "Open the chat", "instruction": "Open the chat with the person who should receive the item. Check the name at the top." },
+      { "title": "Open attachments", "instruction": "Tap the paperclip or plus button beside the message box." },
+      { "title": "Choose the item type", "instruction": "Choose Photos or Gallery for a picture. Choose Document for a file." },
+      { "title": "Select the item", "instruction": "Find and tap the photo or file you want to send." },
+      { "title": "Check the preview", "instruction": "Make sure the preview shows the item you meant to send and the correct chat." },
+      { "title": "Send", "instruction": "Tap the send arrow. Do this only if you are happy to share the item with this person." }
+    ]
+  },
+  {
+    "id": "whatsapp-voice-call",
+    "platform": "whatsapp",
+    "category": "calls",
+    "title": "Make a voice call",
+    "title_ur": "آواز کی کال کریں",
+    "summary": "Start an audio call with a WhatsApp contact.",
+    "search_terms": ["phone call", "audio call", "فون", "کال"],
+    "steps": [
+      { "title": "Open the chat", "instruction": "Open the chat with the person you want to call." },
+      { "title": "Check the contact", "instruction": "Check the name at the top so you call the right person." },
+      { "title": "Tap the phone icon", "instruction": "Tap the phone receiver icon near the top of the screen." },
+      { "title": "Allow microphone access", "instruction": "If your phone asks, allow microphone access only if you want to speak on the call." },
+      { "title": "End the call", "instruction": "When you are finished, tap the red end-call button." }
+    ]
+  },
+  {
+    "id": "whatsapp-video-call",
+    "platform": "whatsapp",
+    "category": "calls",
+    "title": "Make a video call",
+    "title_ur": "ویڈیو کال کریں",
+    "summary": "Start a video call with a WhatsApp contact.",
+    "search_terms": ["video", "camera call", "ویڈیو", "کال"],
+    "steps": [
+      { "title": "Open the chat", "instruction": "Open the chat with the person you want to call." },
+      { "title": "Check the contact", "instruction": "Check the name at the top before starting the call." },
+      { "title": "Tap the video icon", "instruction": "Tap the video camera icon near the top of the screen." },
+      { "title": "Allow camera and microphone", "instruction": "If your phone asks, allow camera and microphone access only if you want to use video and sound." },
+      { "title": "Adjust your camera", "instruction": "Point the camera where you want the other person to see. You can turn the camera off with the on-screen control." },
+      { "title": "End the call", "instruction": "Tap the red end-call button when you are finished." }
+    ]
+  },
+  {
+    "id": "whatsapp-share-location",
+    "platform": "whatsapp",
+    "category": "privacy-and-sharing",
+    "title": "Share your location",
+    "title_ur": "اپنی جگہ شیئر کریں",
+    "summary": "Share a location with a contact. Check the recipient and sharing duration first.",
+    "search_terms": ["live location", "map", "location", "نقشہ", "جگہ"],
+    "steps": [
+      { "title": "Open the chat", "instruction": "Open the chat with the person you intend to share your location with." },
+      { "title": "Open attachments", "instruction": "Tap the paperclip or plus button beside the message box." },
+      { "title": "Choose Location", "instruction": "Tap Location. If asked, allow location access only if you choose to continue." },
+      { "title": "Choose what to share", "instruction": "Choose a one-time current location or live location. Live location can continue sharing for a period of time." },
+      { "title": "Check recipient and duration", "instruction": "Check the contact name and, for live location, the sharing duration. Do not share if you are unsure." },
+      { "title": "Send if you choose", "instruction": "Tap the send control only if you want that person to see the location." }
+    ]
+  },
+  {
+    "id": "whatsapp-find-chat",
+    "platform": "whatsapp",
+    "category": "messages",
+    "title": "Find a chat",
+    "title_ur": "چیٹ تلاش کریں",
+    "summary": "Find a conversation by looking through chats or using search.",
+    "search_terms": ["search contact", "find conversation", "تلاش", "رابطہ"],
+    "steps": [
+      { "title": "Open WhatsApp", "instruction": "Open WhatsApp and go to the Chats screen." },
+      { "title": "Use search", "instruction": "Tap the search icon or search box near the top." },
+      { "title": "Enter a name", "instruction": "Type the person's name or a word from the conversation." },
+      { "title": "Check the result", "instruction": "Read the name shown in the result list to make sure it is the right person." },
+      { "title": "Open the chat", "instruction": "Tap the matching result to open the conversation." }
+    ]
+  },
+  {
+    "id": "whatsapp-create-group",
+    "platform": "whatsapp",
+    "category": "groups",
+    "title": "Create a group",
+    "title_ur": "گروپ بنائیں",
+    "summary": "Start a group chat after checking who will be included.",
+    "search_terms": ["group chat", "add people", "گروپ", "لوگ"],
+    "steps": [
+      { "title": "Open new chat", "instruction": "On the Chats screen, tap the new chat button." },
+      { "title": "Choose New group", "instruction": "Tap New group in the list of options." },
+      { "title": "Select people", "instruction": "Tap the names of people you want to include. Check each name carefully." },
+      { "title": "Continue", "instruction": "Tap the arrow or Next button when the selected names are correct." },
+      { "title": "Name the group", "instruction": "Enter a group name that members will recognize." },
+      { "title": "Create the group", "instruction": "Review the members and group name, then tap Create." }
+    ]
+  },
+  {
+    "id": "gmail-compose-send",
+    "platform": "gmail",
+    "category": "email-basics",
+    "title": "Write and send an email",
+    "title_ur": "ای میل لکھیں اور بھیجیں",
+    "summary": "Write a new email and check the recipient before sending.",
+    "search_terms": ["compose", "new email", "send mail", "ای میل"],
+    "steps": [
+      { "title": "Open Gmail", "instruction": "Open the Gmail app or website." },
+      { "title": "Start a message", "instruction": "Tap Compose, usually shown with a pencil or plus button." },
+      { "title": "Enter the recipient", "instruction": "Type the email address in the To field. Check every part of the address." },
+      { "title": "Add a subject", "instruction": "Tap Subject and write a short description of the email." },
+      { "title": "Write your message", "instruction": "Tap the message area and type what you want to say." },
+      { "title": "Review and send", "instruction": "Check the recipient, subject, and message. Tap Send only when they are correct." }
+    ]
+  },
+  {
+    "id": "gmail-reply",
+    "platform": "gmail",
+    "category": "email-basics",
+    "title": "Reply to an email",
+    "title_ur": "ای میل کا جواب دیں",
+    "summary": "Reply to the sender of an email you received.",
+    "search_terms": ["respond", "answer email", "جواب"],
+    "steps": [
+      { "title": "Open the email", "instruction": "Open the message you want to answer." },
+      { "title": "Choose Reply", "instruction": "Tap Reply, usually below the message or in its menu." },
+      { "title": "Write your reply", "instruction": "Type your response in the reply area." },
+      { "title": "Check the recipient", "instruction": "Make sure the reply is going to the person you intend." },
+      { "title": "Send", "instruction": "Read your reply once more, then tap Send." }
+    ]
+  },
+  {
+    "id": "gmail-forward",
+    "platform": "gmail",
+    "category": "email-basics",
+    "title": "Forward an email",
+    "title_ur": "ای میل آگے بھیجیں",
+    "summary": "Send a received email to another person after checking its contents and recipient.",
+    "search_terms": ["forward message", "share email", "آگے بھیجیں"],
+    "steps": [
+      { "title": "Open the email", "instruction": "Open the message you want to forward." },
+      { "title": "Choose Forward", "instruction": "Tap Forward, usually in the message menu or below the email." },
+      { "title": "Enter the recipient", "instruction": "Type the email address of the person who should receive it." },
+      { "title": "Review the contents", "instruction": "Check the forwarded message and attachments. Remove anything you do not want to share." },
+      { "title": "Send", "instruction": "Check the recipient again, then tap Send if you want to share it." }
+    ]
+  },
+  {
+    "id": "gmail-attach-file",
+    "platform": "gmail",
+    "category": "files-and-attachments",
+    "title": "Attach a file to an email",
+    "title_ur": "ای میل کے ساتھ فائل لگائیں",
+    "summary": "Add a document or photo to an email before sending it.",
+    "search_terms": ["paperclip", "document", "photo", "attachment", "فائل"],
+    "steps": [
+      { "title": "Compose an email", "instruction": "Tap Compose and enter the recipient and subject." },
+      { "title": "Open attachments", "instruction": "Tap the paperclip icon near the top of the screen." },
+      { "title": "Choose where the file is", "instruction": "Choose Attach file for a document, or Insert from Drive if the file is stored there." },
+      { "title": "Select the file", "instruction": "Find the file and tap it once. Wait for it to finish attaching." },
+      { "title": "Confirm the attachment", "instruction": "Check that the file name appears in the email and that it is the file you intend to share." },
+      { "title": "Review and send", "instruction": "Check the recipient and message. Tap Send only when you are ready." }
+    ]
+  },
+  {
+    "id": "gmail-search-email",
+    "platform": "gmail",
+    "category": "email-basics",
+    "title": "Find an email",
+    "title_ur": "ای میل تلاش کریں",
+    "summary": "Search for an email by sender, subject, or a word in the message.",
+    "search_terms": ["search inbox", "find message", "تلاش"],
+    "steps": [
+      { "title": "Open Gmail", "instruction": "Open Gmail and find the search box near the top." },
+      { "title": "Tap search", "instruction": "Tap the search box." },
+      { "title": "Enter a search word", "instruction": "Type a sender name, email address, subject, or word you remember." },
+      { "title": "Review results", "instruction": "Check the sender and subject shown in each result." },
+      { "title": "Open the right email", "instruction": "Tap the result that matches the email you want." }
+    ]
+  },
+  {
+    "id": "gmail-download-attachment",
+    "platform": "gmail",
+    "category": "files-and-attachments",
+    "title": "Download an email attachment",
+    "title_ur": "ای میل کی منسلک فائل ڈاؤن لوڈ کریں",
+    "summary": "Save an attachment from an email you trust.",
+    "search_terms": ["save file", "download document", "attachment", "ڈاؤن لوڈ"],
+    "steps": [
+      { "title": "Open the email", "instruction": "Open the email with the attachment." },
+      { "title": "Check the sender", "instruction": "Make sure you recognize the sender and expected this file. If unsure, ask the sender using a contact method you already trust." },
+      { "title": "Check the file name", "instruction": "Look at the file name and type. Do not open an unexpected file." },
+      { "title": "Download", "instruction": "Tap the download icon beside the attachment if you want to save it." },
+      { "title": "Find the saved file", "instruction": "Open your phone's Files or Downloads app and look for the file." }
+    ]
+  },
+  {
+    "id": "gmail-identify-suspicious-email",
+    "platform": "gmail",
+    "category": "privacy-and-safety",
+    "title": "Handle a suspicious email",
+    "title_ur": "مشکوک ای میل سے نمٹیں",
+    "summary": "Pause and check an email before opening links, files, or sharing information.",
+    "search_terms": ["spam", "scam", "phishing", "unsafe email", "مشکوک", "فراڈ"],
+    "steps": [
+      { "title": "Pause before acting", "instruction": "Do not rush because a message says your account is in danger or demands immediate action." },
+      { "title": "Check the sender", "instruction": "Read the full sender address. A familiar display name can still hide an unfamiliar address." },
+      { "title": "Watch for sensitive requests", "instruction": "Do not send a password, PIN, or one-time code by email or through a link in the message." },
+      { "title": "Verify separately", "instruction": "If it claims to be from a bank or company, contact that organization using a number or website you already trust." },
+      { "title": "Report or delete", "instruction": "If you believe it is unwanted or fraudulent, use Gmail's Report spam or Report phishing option. Ask someone you trust if you are unsure." }
+    ]
+  }
+]

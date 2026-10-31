@@ -62,19 +62,19 @@ This is the shared work order for Person A (frontend/content) and Person B (back
 
 **Person A**
 
-- Write WhatsApp guides: video call, voice message, share location, and send file/photo.
-- Write Gmail attachment guide covering compose, paperclip, choose file, confirm attachment, and send.
-- Organize guides as a searchable library. After the required first set, add common WhatsApp tasks (messages, photos/files, calls, finding chats, basic privacy) and Gmail tasks (compose, reply, forward, find, attach/download, suspicious/spam email) as time allows.
+- Integrate the bundled guide library in the UI and add/expand mock screens.
 - Each guide has 4–7 short steps, one action per step, Back/Next, and correct “Step X of Y”.
 - Create/label recreated mock screens; state clearly they are mock screens, not the real apps.
 - Build phone-friendly glossary bottom sheet integration.
 
 **Person B**
 
-- Provide 15 glossary entries (English plus Urdu where available) and implement `GET /api/glossary`.
-- Keep cached bill results and glossary data structurally stable.
+- Provide the initial WhatsApp/Gmail guide library and 15 bilingual glossary entries in `Frotend/src/data/` so Vite bundles them for offline use.
+- Implement `GET /api/guides` and `GET /api/glossary` as convenience endpoints reading the same local JSON files.
+- Validate guide IDs and 4–7 step lengths; keep search tags and text plain and client-searchable.
+- Keep cached bill results and content schemas stable.
 
-**Integration checkpoint:** glossary opens offline after load; every guide works with no API/AI calls.
+**Integration checkpoint:** guide and glossary content is included in the frontend bundle; local search, guide steps, and glossary lookup work without API/AI calls. Backend content routes return the same JSON.
 
 ## Chunk 4 — Bill upload and safety/privacy (P1)
 

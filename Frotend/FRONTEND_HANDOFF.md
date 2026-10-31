@@ -39,13 +39,16 @@ Do not commit local `.env` files. The frontend must work without an AI key. Use 
 |---|---|---|
 | GET | `/api/health` | Read effective mode (`cached` or `live`) and backend readiness |
 | GET | `/api/samples` | Load the three fake bills for sample selection and offline demo content |
-| GET | `/api/glossary` | Load 15 glossary entries (English and optional Urdu); additive route agreed by both people |
+| GET | `/api/glossary` | Return the 15 glossary entries for API clients |
+| GET | `/api/guides` | Return the guide library for API clients |
 | POST | `/api/extract-bill` | Submit a sample ID or a bill upload |
 | POST | `/api/explain-screen` | Submit one of the cached screenshot IDs or an uploaded screenshot |
 | POST | `/api/ask-about-upload` | Ask a question about a selected bill/screenshot or uploaded file (live mode for arbitrary questions; curated cached questions offline) |
 | POST | `/api/support/chat` | Ask about Agahi, guides, WhatsApp, or email; voice transcripts use the same route |
 
 All routes use the base URL above. Uploads use `FormData` with the field name `file`; do not manually set the `Content-Type` header because the browser supplies the multipart boundary. Cached sample requests may send JSON `{ "sample_id": "electricity-001" }`; backend also accepts `sample_id` as a multipart text field.
+
+Import `guides.json` and `glossary.json` from `src/data/` into the frontend bundle. Do not fetch them before rendering required content: guide navigation, glossary lookup, and search must work without a backend connection. The matching GET routes are available for API consumers and consistency checks. Search locally across English/Urdu titles and `search_terms`; avoid a remote search/indexing service.
 
 The support-chat JSON request is `{ "message": "How do I send a photo?", "guide_id": "whatsapp-send-photo", "language": "en" }`. `guide_id` and `language` are optional; language is `en` or `ur`. The response is `{ "reply": "...", "related_guide_ids": [], "mode": "cached" | "live" }`. There is no separate voice API route for the first version: use browser speech recognition, display the transcript for correction, send it as `message`, and optionally read the visible response aloud using speech synthesis.
 
@@ -95,7 +98,7 @@ Amounts are objects with value and currency; dates use `YYYY-MM-DD` or `null`; a
 }
 ```
 
-Urdu values may be absent. Fall back to English when missing. Glossary and guides must remain usable offline after content loads; keep the app's essential navigation and guides independent of the API.
+Urdu values are included in the current glossary; retain English fallback for any future untranslated entry. Glossary and guides are bundled with the frontend so lookup, search, and step navigation need no API call.
 
 ### Screen helper result
 
@@ -167,9 +170,10 @@ Uploads are limited to 5 MB. Disable repeated submit while a request is pending,
 
 ### Glossary
 
-- Load entries from `/api/glossary` and highlight known terms in bill explanations where practical.
+- Use the bundled `src/data/glossary.json` and highlight known terms in bill explanations where practical.
 - Tapping a term opens a phone-friendly bottom sheet with definition and optional Urdu.
 - Include clear close behavior and English fallback.
+- Keep search local and immediate. Use a simple case-insensitive filter over terms, definitions, and search terms; no database or remote index is needed for 15 entries.
 
 ### Guides
 
@@ -179,6 +183,7 @@ Uploads are limited to 5 MB. Disable repeated submit while a request is pending,
 - First and last steps have correct disabled/finish behavior. Guide progression never calls AI.
 - Screens are recreated mocks; visibly disclose that they are not live WhatsApp/Gmail screens.
 - Add “Ask a question” from guide pages. Questions may be typed or spoken; include the current `guide_id` as context where relevant and display the answer as text even when speech is used.
+- Import guide JSON locally and filter it on-device so guide discovery works offline. Each guide has 4–7 steps; keep a stable, non-scrolling step layout with clear Back/Next controls and a step count.
 
 ### Screen helper (if time allows)
 
@@ -201,6 +206,8 @@ Explain plainly that uploads are processed for the request and not saved, settin
 
 - Text size and high contrast apply across all screens and persist after reload (localStorage is suitable).
 - Body text at least 18 px; buttons at least 48 px tall.
+- Aim for at least 4.5:1 text contrast (7:1 where practical); never use color as the only status cue. Keep A+/A− controls easy to reach while reading a guide.
+- Use lightweight SVG icons; do not require video downloads or remote media for guide completion.
 - Ensure Urdu Nastaliq text shapes correctly and remains readable on small screens.
 - Keep touch targets generous and avoid relying on color alone.
 
@@ -208,7 +215,7 @@ Explain plainly that uploads are processed for the request and not saved, settin
 
 1. Build the app shell and navigation with local placeholder data.
 2. Agree with Person B on `VITE_API_BASE_URL`, response examples, and sample IDs before wiring views.
-3. Integrate health, samples, and glossary; retain friendly fallback states.
+3. Integrate health and samples; import guides and glossary locally from `src/data/`.
 4. Integrate cached sample extraction and screen helper IDs.
 5. Add upload requests and all error states.
 6. Complete guides, privacy, accessibility, and Urdu fallback without depending on live AI.
@@ -224,7 +231,7 @@ Coordinate whenever a response field or route needs to change; update the shared
 - [ ] User can ask about the selected bill/screenshot; cached suggested questions work offline and unsupported cached questions are labelled unavailable.
 - [ ] Account number is displayed only in the masked form supplied by the API.
 - [ ] Glossary bottom sheet opens/closes and uses English fallback for missing Urdu.
-- [ ] Four WhatsApp guides and Gmail guide work offline with 4–7 steps and accurate step count.
+- [ ] Guide library works offline; each guide has 4–7 steps and accurate step count.
 - [ ] Mock screens are labelled as recreated examples.
 - [ ] Privacy is reachable within two taps from Home.
 - [ ] Text size and contrast persist and apply throughout the app; controls and text meet minimum sizes.

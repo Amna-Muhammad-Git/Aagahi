@@ -39,12 +39,14 @@ Backend/
     samples.json
     sample-results.json
     screen-results.json
-    glossary.json
 Frotend/
-  (Person A owns the React app, guides, mock screens, and UI)
+  src/data/
+    guides.json
+    glossary.json
+  (Person A owns the UI; content JSON is bundled locally for offline use)
 ```
 
-Person B owns the JSON files in `Backend/data/`; Person A owns guides, mock screens, and frontend presentation. Keep the glossary in the backend data folder and expose it through the additive `GET /api/glossary` route below, so the frontend does not need cross-folder imports. Sample bill content is served through `GET /api/samples`.
+`Frotend/src/data/guides.json` and `glossary.json` are the canonical offline content files. The frontend imports these JSON files into its bundle and performs guide/glossary search locally, so reading content does not need a network request. The backend reads the same files and exposes `GET /api/guides` and `GET /api/glossary` for API consumers. Keep the `Frotend/` directory in backend deployments so these shared files are present. Backend bill/cache files stay under `Backend/data/`.
 
 ## 3. API base URL and transport
 
@@ -52,7 +54,7 @@ Person B owns the JSON files in `Backend/data/`; Person A owns guides, mock scre
 - Frontend reads `VITE_API_BASE_URL`; for local development set it to `http://localhost:4000` (no trailing slash).
 - JSON routes use `Content-Type: application/json` responses and UTF-8. Upload routes use `multipart/form-data` with field name `file`; the browser must set the multipart boundary, so do not manually set that request header.
 - Enable CORS only for the configured frontend origin in development/hosting. Do not use wildcard origins with credentials.
-- All routes are prefixed `/api`. Health, samples, and glossary are GET; extraction, screen help, upload questions, and support questions are POST.
+- All routes are prefixed `/api`. Health, samples, guides, and glossary are GET; extraction, screen help, upload questions, and support questions are POST.
 - Standard error body: `{ "error": "<stable_code>", "message": "<safe user-facing message>" }`. Never return stack traces, provider errors, or model text.
 - Support answer request shape is JSON. Voice input is transcribed in the browser and sent as the same `message` field; there is no separate voice API route in the first version.
 
@@ -102,7 +104,7 @@ The amounts above are illustrative. Use team-written fake content only. Use ISO 
 
 ### `GET /api/glossary` (agreed additive route)
 
-Returns exactly 15 offline-ready glossary entries, with English and short Urdu where available. This addition resolves the ownership/access gap in the development plan: Person B owns the glossary JSON, while Person A consumes it from the API.
+Returns exactly 15 offline-ready glossary entries, with English and short Urdu. This endpoint reads `Frotend/src/data/glossary.json`; the frontend imports the same JSON locally for offline access.
 
 ```json
 [
@@ -116,7 +118,13 @@ Returns exactly 15 offline-ready glossary entries, with English and short Urdu w
 ]
 ```
 
-Use `null` or omit Urdu values when not translated; the frontend falls back to English. All text is plain text.
+Urdu labels and definitions are bundled with English fallback fields. All text is plain text.
+
+### `GET /api/guides` (content convenience route)
+
+Returns the guide array from `Frotend/src/data/guides.json`. The frontend should import that same JSON locally and filter it on-device; it must not depend on this route to display guides offline.
+
+Each guide has `id`, `platform`, `category`, `title`, `title_ur`, `summary`, `search_terms`, and `steps`. Each step has `title` and `instruction`. Directions should be short, literal, respectful, and free of unnecessary jargon. App labels and screen placement can vary by device/version; acknowledge that where relevant.
 
 ### `POST /api/extract-bill`
 
@@ -210,7 +218,8 @@ Answer only what can be supported by the supplied file/sample. If not visible or
 - `sample-results.json`: cached extraction result keyed by the same sample IDs. Keep it structurally identical to the success response.
 - `screen-results.json`: two cached screen outputs keyed by stable screenshot IDs.
 - `question-results.json`: curated cached answers keyed by sample ID and suggested question ID; these power offline suggested questions.
-- `glossary.json`: exactly 15 entries with English definition and optional Urdu fields.
+- `Frotend/src/data/glossary.json`: exactly 15 bilingual, plain-text entries imported into the frontend bundle.
+- `Frotend/src/data/guides.json`: authored guides bundled into the frontend and served by the optional guide API route.
 - Validate all JSON at startup (or validate on read) and fail clearly if shipped cache data is malformed. Validate provider output against an explicit schema before responding.
 - Strip tags/control characters or reject unexpected non-string content; frontend also renders as text, never HTML.
 - Account masking: normalize a detected account number, retain only its last four digits, and discard the full value before constructing the response. Do not put full values in logs or cache.

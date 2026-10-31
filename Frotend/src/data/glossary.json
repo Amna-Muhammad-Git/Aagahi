@@ -1,0 +1,122 @@
+[
+  {
+    "id": "account-number",
+    "term": "Account number",
+    "term_ur": "اکاؤنٹ نمبر",
+    "definition": "A number the service provider uses to identify your connection or account.",
+    "definition_ur": "وہ نمبر جس سے ادارہ آپ کے اکاؤنٹ یا کنکشن کی شناخت کرتا ہے۔",
+    "search_terms": ["consumer number", "customer number", "اکاؤنٹ"]
+  },
+  {
+    "id": "amount-due",
+    "term": "Amount due",
+    "term_ur": "واجب الادا رقم",
+    "definition": "The amount the bill says is owed by the due date. Check the original bill before paying.",
+    "definition_ur": "بل کے مطابق آخری تاریخ تک ادا کی جانے والی رقم۔ ادائیگی سے پہلے اصل بل دیکھیں۔",
+    "search_terms": ["total", "payable", "amount payable", "رقم"]
+  },
+  {
+    "id": "arrears",
+    "term": "Arrears",
+    "term_ur": "بقایا جات",
+    "definition": "An amount shown as unpaid from an earlier billing period. Check whether you have already paid it.",
+    "definition_ur": "پچھلی بلنگ مدت کی وہ رقم جو بل میں غیر ادا شدہ دکھائی گئی ہو۔",
+    "search_terms": ["unpaid", "previous dues", "پچھلے واجبات"]
+  },
+  {
+    "id": "attachment",
+    "term": "Attachment",
+    "term_ur": "منسلک فائل",
+    "definition": "A photo or document added to an email or message.",
+    "definition_ur": "ای میل یا پیغام کے ساتھ بھیجی گئی تصویر یا دستاویز۔",
+    "search_terms": ["file", "document", "paperclip", "فائل"]
+  },
+  {
+    "id": "billing-period",
+    "term": "Billing period",
+    "term_ur": "بلنگ کی مدت",
+    "definition": "The dates or month that the bill covers.",
+    "definition_ur": "وہ تاریخیں یا مہینہ جس کے لیے بل جاری کیا گیا ہے۔",
+    "search_terms": ["bill month", "billing month", "مدت"]
+  },
+  {
+    "id": "current-charges",
+    "term": "Current charges",
+    "term_ur": "موجودہ چارجز",
+    "definition": "Charges added for the current billing period, before any earlier balance is included.",
+    "definition_ur": "موجودہ بلنگ مدت کے چارجز، پچھلا بقایا شامل کرنے سے پہلے۔",
+    "search_terms": ["current month", "new charges", "موجودہ رقم"]
+  },
+  {
+    "id": "due-date",
+    "term": "Due date",
+    "term_ur": "آخری تاریخ",
+    "definition": "The date printed as the deadline. The provider's rules may change after this date.",
+    "definition_ur": "بل پر درج آخری تاریخ۔ اس کے بعد ادارے کے قواعد لاگو ہو سکتے ہیں۔",
+    "search_terms": ["payment date", "deadline", "آخری دن"]
+  },
+  {
+    "id": "fixed-charge",
+    "term": "Fixed charge",
+    "term_ur": "مقررہ چارج",
+    "definition": "A charge that may apply even when usage is low. The bill provider sets its rules.",
+    "definition_ur": "ایسا چارج جو کم استعمال پر بھی لگ سکتا ہے۔",
+    "search_terms": ["service charge", "fixed fee", "مقررہ فیس"]
+  },
+  {
+    "id": "inbox",
+    "term": "Inbox",
+    "term_ur": "موصولہ ای میل",
+    "definition": "The place in an email app where received messages are shown.",
+    "definition_ur": "ای میل ایپ میں وہ جگہ جہاں موصولہ پیغامات دکھائی دیتے ہیں۔",
+    "search_terms": ["received mail", "موصولہ پیغامات"]
+  },
+  {
+    "id": "late-fee",
+    "term": "Late fee",
+    "term_ur": "تاخیر کا جرمانہ",
+    "definition": "An extra charge the provider may list for payment after the due date.",
+    "definition_ur": "آخری تاریخ کے بعد ادائیگی پر لگنے والا اضافی چارج۔",
+    "search_terms": ["late payment surcharge", "surcharge", "جرمانہ"]
+  },
+  {
+    "id": "meter-reading",
+    "term": "Meter reading",
+    "term_ur": "میٹر کی ریڈنگ",
+    "definition": "The number recorded from a meter to calculate usage.",
+    "definition_ur": "استعمال کا حساب لگانے کے لیے میٹر پر درج عدد۔",
+    "search_terms": ["reading", "meter", "ریڈنگ"]
+  },
+  {
+    "id": "previous-balance",
+    "term": "Previous balance",
+    "term_ur": "پچھلا بقایا",
+    "definition": "An amount carried over from an earlier bill. The bill alone may not show whether it was paid later.",
+    "definition_ur": "پچھلے بل سے آگے منتقل کی گئی رقم۔ بل یہ نہیں بتا سکتا کہ بعد میں ادائیگی ہوئی یا نہیں۔",
+    "search_terms": ["previous dues", "arrears", "پچھلی رقم"]
+  },
+  {
+    "id": "spam",
+    "term": "Spam",
+    "term_ur": "غیر مطلوب ای میل",
+    "definition": "An unwanted email. Some spam messages may try to trick you into sharing details or opening unsafe links.",
+    "definition_ur": "غیر مطلوب ای میل۔ بعض پیغامات آپ سے معلومات لینے یا مشکوک لنک کھلوانے کی کوشش کرتے ہیں۔",
+    "search_terms": ["junk mail", "unwanted email", "فضول ای میل"]
+  },
+  {
+    "id": "taxes-and-fees",
+    "term": "Taxes and fees",
+    "term_ur": "ٹیکس اور فیس",
+    "definition": "Extra amounts listed by the provider or a government authority. The bill may not explain every rule.",
+    "definition_ur": "ادارے یا سرکاری محکمے کی طرف سے درج اضافی رقوم۔",
+    "search_terms": ["tax", "duty", "fee", "ٹیکس"]
+  },
+  {
+    "id": "units-used",
+    "term": "Units used",
+    "term_ur": "استعمال شدہ یونٹس",
+    "definition": "The measured amount of a service used during the billing period.",
+    "definition_ur": "بلنگ کی مدت میں استعمال ہونے والی سروس کی ناپی گئی مقدار۔",
+    "search_terms": ["usage", "consumption", "یونٹس"]
+  }
+]

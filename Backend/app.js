@@ -2,10 +2,38 @@ const cors = require("cors");
 const express = require("express");
 const samples = require("./data/samples.json");
 const sampleResults = require("./data/sample-results.json");
+const guides = require("../Frotend/src/data/guides.json");
+const glossary = require("../Frotend/src/data/glossary.json");
 
 const sampleResultsById = new Map(
   sampleResults.map((sample) => [sample.id, sample]),
 );
+
+function validateOfflineContent() {
+  const glossaryIds = new Set(glossary.map((entry) => entry.id));
+  const guideIds = new Set(guides.map((guide) => guide.id));
+
+  if (glossary.length !== 15 || glossaryIds.size !== glossary.length) {
+    throw new Error("Glossary content must contain 15 entries with unique IDs.");
+  }
+
+  if (guideIds.size !== guides.length) {
+    throw new Error("Guide content must have unique IDs.");
+  }
+
+  for (const guide of guides) {
+    if (
+      !Array.isArray(guide.steps) ||
+      guide.steps.length < 4 ||
+      guide.steps.length > 7 ||
+      guide.steps.some((step) => !step.title || !step.instruction)
+    ) {
+      throw new Error(`Guide ${guide.id} must contain 4 to 7 complete steps.`);
+    }
+  }
+}
+
+validateOfflineContent();
 
 function createApp() {
   const app = express();
@@ -41,6 +69,14 @@ function createApp() {
 
   app.get("/api/samples", (_req, res) => {
     res.json(samples);
+  });
+
+  app.get("/api/glossary", (_req, res) => {
+    res.json(glossary);
+  });
+
+  app.get("/api/guides", (_req, res) => {
+    res.json(guides);
   });
 
   app.post("/api/extract-bill", (req, res) => {
