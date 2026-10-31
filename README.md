@@ -52,15 +52,16 @@ Vite embeds `VITE_` variables in browser code. Never put passwords, API keys, or
 
 The Home page has quick tasks for bills, screenshots, WhatsApp, Gmail, and questions, plus feature cards and a privacy reminder.
 
-#### Screenshot — Home
-
 ![alt text](image.png)
+
+### Urdu Language Support
+
+![alt text](image-8.png)
 
 ### Bills
 
 Choose a built-in sample bill or upload a PDF, JPG, or PNG file. The page presents a plain-language explanation and lets the user ask follow-up questions. The user checks the original bill before taking action.
 
-#### Screenshot — Bills
 
 ![alt text](image-1.png)
 
@@ -68,15 +69,11 @@ Choose a built-in sample bill or upload a PDF, JPG, or PNG file. The page presen
 
 Browse and search the static WhatsApp and Gmail learning guides. Guide titles are available in English and Urdu.
 
-#### Screenshot — Guide Library
-
 ![alt text](image-2.png)
 
 ### Guide Steps
 
 Each guide presents one instruction at a time, with Back, Next, and Finish controls. Urdu mode displays Urdu instructions while retaining the English instruction as a smaller helper reference. The recreated phone mock screens remain illustrative and are not the real WhatsApp or Gmail apps.
-
-#### Screenshot — Guide Steps
 
 ![alt text](image-3.png)
 
@@ -84,15 +81,11 @@ Each guide presents one instruction at a time, with Back, Next, and Finish contr
 
 Try a built-in mock screen or upload a PNG/JPEG screenshot for an explanation when the backend is in live mode. The page shows the analysis, confidence, and safety note, with suggested follow-up questions. Sample previews are simplified mock screens, not screenshots from the real apps.
 
-#### Screenshot — Screen Helper
-
 ![alt text](image-4.png)
 
 ### Ask
 
 Ask about bills, WhatsApp, or email. The chat can use the backend when available and has built-in FAQ answers for common questions when offline. Voice input and spoken answers use browser speech recognition and speech synthesis when supported.
-
-#### Screenshot — Ask
 
 ![alt text](image-5.png)
 
@@ -100,21 +93,15 @@ Ask about bills, WhatsApp, or email. The chat can use the backend when available
 
 Read what Aagahi uses for a request, what is saved on the device, and what Aagahi never asks for. The page also explains live and offline behavior.
 
-#### Screenshot — Privacy
-
 ![alt text](image-6.png)
 
 ### Settings
 
 Adjust text size, contrast, language (English or Urdu), and motion. Settings are saved in the browser's local storage. Urdu interface labels use Noto Nastaliq Urdu; English remains in Noto Sans.
 
-#### Screenshot — Settings
-
 ![alt text](image-7.png)
 
-### Urdu Language Support
 
-![alt text](image-8.png)
 
 ## Feature status
 
