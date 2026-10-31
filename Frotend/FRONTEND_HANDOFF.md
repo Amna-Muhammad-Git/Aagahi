@@ -60,6 +60,7 @@ The sample list and extraction endpoint use the same bill fields:
 ```json
 {
   "id": "electricity-001",
+  "bill_type": "electricity",
   "provider": "Example Electric Company",
   "amount_due": { "value": 8420, "currency": "PKR" },
   "due_date": "2026-11-15",

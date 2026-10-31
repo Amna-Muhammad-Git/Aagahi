@@ -1,5 +1,11 @@
 const cors = require("cors");
 const express = require("express");
+const samples = require("./data/samples.json");
+const sampleResults = require("./data/sample-results.json");
+
+const sampleResultsById = new Map(
+  sampleResults.map((sample) => [sample.id, sample]),
+);
 
 function createApp() {
   const app = express();
@@ -31,6 +37,31 @@ function createApp() {
       status: "ok",
       mode: getMode(),
     });
+  });
+
+  app.get("/api/samples", (_req, res) => {
+    res.json(samples);
+  });
+
+  app.post("/api/extract-bill", (req, res) => {
+    const sampleId = req.body?.sample_id;
+
+    if (typeof sampleId !== "string" || sampleId.trim() === "") {
+      return res.status(400).json({
+        error: "missing_input",
+        message: "Choose a sample bill to continue.",
+      });
+    }
+
+    const result = sampleResultsById.get(sampleId.trim());
+    if (!result) {
+      return res.status(404).json({
+        error: "sample_not_found",
+        message: "That sample bill is not available. Choose another sample.",
+      });
+    }
+
+    return res.json(result);
   });
 
   app.use((_req, res) => {

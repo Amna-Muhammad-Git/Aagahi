@@ -1,0 +1,65 @@
+[
+  {
+    "id": "electricity-001",
+    "bill_type": "electricity",
+    "provider": "Example Electric Utility",
+    "amount_due": { "value": 8420, "currency": "PKR" },
+    "due_date": "2026-11-15",
+    "billing_period": "October 2026",
+    "account_number": "••••1234",
+    "previous_balance": { "value": 0, "currency": "PKR" },
+    "late_fee": null,
+    "explanations": {
+      "provider": "The company that sent this electricity bill.",
+      "amount_due": "The amount this sample bill says is due. Check the original bill before paying.",
+      "due_date": "The date shown as the payment deadline.",
+      "billing_period": "The period covered by this bill.",
+      "account_number": "Only the last four digits are shown for privacy.",
+      "previous_balance": "No previous unpaid balance was listed.",
+      "late_fee": "Not found on this bill."
+    },
+    "mode": "cached"
+  },
+  {
+    "id": "gas-001",
+    "bill_type": "gas",
+    "provider": "Example Gas Utility",
+    "amount_due": { "value": 3260, "currency": "PKR" },
+    "due_date": "2026-11-18",
+    "billing_period": "October 2026",
+    "account_number": "••••5678",
+    "previous_balance": { "value": 450, "currency": "PKR" },
+    "late_fee": null,
+    "explanations": {
+      "provider": "The company that sent this gas bill.",
+      "amount_due": "The total amount this sample bill says is due. Check the original bill before paying.",
+      "due_date": "The date shown as the payment deadline.",
+      "billing_period": "The period covered by this bill.",
+      "account_number": "Only the last four digits are shown for privacy.",
+      "previous_balance": "An amount from an earlier bill is shown here. Check whether it has already been paid.",
+      "late_fee": "Not found on this bill."
+    },
+    "mode": "cached"
+  },
+  {
+    "id": "water-001",
+    "bill_type": "water",
+    "provider": "Example Water Utility",
+    "amount_due": { "value": 2100, "currency": "PKR" },
+    "due_date": "2026-11-20",
+    "billing_period": "October 2026",
+    "account_number": "••••9012",
+    "previous_balance": null,
+    "late_fee": null,
+    "explanations": {
+      "provider": "The company that sent this water bill.",
+      "amount_due": "The amount this sample bill says is due. Check the original bill before paying.",
+      "due_date": "The date shown as the payment deadline.",
+      "billing_period": "The period covered by this bill.",
+      "account_number": "Only the last four digits are shown for privacy.",
+      "previous_balance": "Not found on this bill.",
+      "late_fee": "Not found on this bill."
+    },
+    "mode": "cached"
+  }
+]

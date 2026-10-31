@@ -76,6 +76,7 @@ Returns the three fake sample bills. Keep the object structure identical to the 
 [
   {
     "id": "electricity-001",
+    "bill_type": "electricity",
     "provider": "Example Electric Company",
     "amount_due": { "value": 8420, "currency": "PKR" },
     "due_date": "2026-11-15",
@@ -128,6 +129,7 @@ Success (`200`) has the same field structure as a sample object, plus an optiona
 ```json
 {
   "id": "electricity-001",
+  "bill_type": "electricity",
   "provider": "Example Electric Company",
   "amount_due": { "value": 8420, "currency": "PKR" },
   "due_date": "2026-11-15",

@@ -24,5 +24,7 @@ The frontend should use `VITE_API_BASE_URL=http://localhost:4000`. Set `FRONTEND
 ## Current routes
 
 - `GET /api/health` — server status and configured mode.
+- `GET /api/samples` — three fictional electricity, gas, and water sample bills.
+- `POST /api/extract-bill` — retrieve a cached result with JSON `{ "sample_id": "electricity-001" }`.
 
-Other routes will be added in the following implementation chunks. See [the backend handoff](BACKEND_HANDOFF.md) for the shared API contract.
+Upload handling and the remaining routes will be added in following implementation chunks. See [the backend handoff](BACKEND_HANDOFF.md) for the full shared API contract.
