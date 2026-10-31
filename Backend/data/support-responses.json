@@ -1,0 +1,102 @@
+[
+  {
+    "id": "whatsapp-video-call-start",
+    "guide_id": "whatsapp-video-call",
+    "question_en": "How do I make a WhatsApp video call?",
+    "question_ur": "واٹس ایپ پر ویڈیو کال کیسے کریں؟",
+    "match_phrases_en": ["how do i make a whatsapp video call", "how to start a whatsapp video call", "start a video call"],
+    "match_phrases_ur": ["واٹس ایپ پر ویڈیو کال کیسے کریں", "ویڈیو کال کیسے شروع کریں"],
+    "answer_en": "Open the chat, check the person's name, and tap the video camera icon. Allow camera or microphone access only if you want to use them. Tap the red end-call button when finished.",
+    "answer_ur": "چیٹ کھولیں، شخص کا نام دیکھیں، پھر ویڈیو کیمرہ کے نشان پر ٹیپ کریں۔ کیمرہ یا مائیک کی اجازت صرف تب دیں جب آپ انہیں استعمال کرنا چاہیں۔ ختم ہونے پر سرخ کال ختم کرنے والے بٹن پر ٹیپ کریں۔"
+  },
+  {
+    "id": "whatsapp-video-call-end",
+    "guide_id": "whatsapp-video-call",
+    "question_en": "How do I end a WhatsApp video call?",
+    "question_ur": "واٹس ایپ ویڈیو کال کیسے ختم کریں؟",
+    "match_phrases_en": ["how do i end a whatsapp video call", "end a video call", "hang up a video call"],
+    "match_phrases_ur": ["ویڈیو کال کیسے ختم کریں", "کال ختم کرنے کا طریقہ"],
+    "answer_en": "Tap the red end-call button on the call screen. If you do not see it, tap the screen once to show the call controls.",
+    "answer_ur": "کال کی اسکرین پر سرخ کال ختم کرنے والے بٹن پر ٹیپ کریں۔ اگر بٹن نظر نہ آئے تو کنٹرول دکھانے کے لیے اسکرین پر ایک بار ٹیپ کریں۔"
+  },
+  {
+    "id": "whatsapp-voice-message-send",
+    "guide_id": "whatsapp-voice-message",
+    "question_en": "How do I send a WhatsApp voice message?",
+    "question_ur": "واٹس ایپ پر آواز کا پیغام کیسے بھیجیں؟",
+    "match_phrases_en": ["how do i send a whatsapp voice message", "send a voice message", "send a voice note"],
+    "match_phrases_ur": ["آواز کا پیغام کیسے بھیجیں", "وائس میسج کیسے بھیجیں"],
+    "answer_en": "Open the chat and press and hold the microphone button while speaking. Release it to send. If you do not want to send the recording, use the cancel or delete control before releasing.",
+    "answer_ur": "چیٹ کھولیں اور بولتے وقت مائیک کے بٹن کو دبا کر رکھیں۔ بھیجنے کے لیے بٹن چھوڑ دیں۔ اگر ریکارڈنگ نہیں بھیجنی تو بٹن چھوڑنے سے پہلے منسوخ یا حذف کرنے کا اختیار استعمال کریں۔"
+  },
+  {
+    "id": "whatsapp-voice-message-cancel",
+    "guide_id": "whatsapp-voice-message",
+    "question_en": "How do I cancel a voice message?",
+    "question_ur": "آواز کا پیغام منسوخ کیسے کریں؟",
+    "match_phrases_en": ["how do i cancel a voice message", "cancel a voice note", "delete a voice recording before sending"],
+    "match_phrases_ur": ["آواز کا پیغام کیسے منسوخ کریں", "وائس میسج منسوخ کریں"],
+    "answer_en": "While recording, use the cancel or delete control shown on your screen before you release the microphone. The exact gesture can differ by phone version.",
+    "answer_ur": "ریکارڈنگ کے دوران مائیک چھوڑنے سے پہلے اسکرین پر دکھایا گیا منسوخ یا حذف کرنے کا اختیار استعمال کریں۔ درست طریقہ فون کے ورژن کے مطابق مختلف ہو سکتا ہے۔"
+  },
+  {
+    "id": "whatsapp-location-share",
+    "guide_id": "whatsapp-share-location",
+    "question_en": "How do I share my location on WhatsApp?",
+    "question_ur": "واٹس ایپ پر اپنی جگہ کیسے شیئر کریں؟",
+    "match_phrases_en": ["how do i share my location on whatsapp", "share my location", "send my location"],
+    "match_phrases_ur": ["اپنی جگہ کیسے شیئر کریں", "لوکیشن کیسے بھیجیں"],
+    "answer_en": "Open the intended chat, tap the attachment or plus button, and choose Location. Review the contact and choose a one-time location or live location. Tap Send only if you want to share it.",
+    "answer_ur": "مطلوبہ چیٹ کھولیں، منسلکہ یا پلس کے بٹن پر ٹیپ کریں اور لوکیشن منتخب کریں۔ رابطے کا نام دیکھیں اور ایک بار کی جگہ یا لائیو لوکیشن منتخب کریں۔ صرف تب بھیجیں جب آپ اسے شیئر کرنا چاہیں۔"
+  },
+  {
+    "id": "whatsapp-location-live-vs-current",
+    "guide_id": "whatsapp-share-location",
+    "question_en": "What is the difference between current and live location?",
+    "question_ur": "موجودہ جگہ اور لائیو لوکیشن میں کیا فرق ہے؟",
+    "match_phrases_en": ["difference between current and live location", "what is live location", "current location versus live location"],
+    "match_phrases_ur": ["موجودہ جگہ اور لائیو لوکیشن میں فرق", "لائیو لوکیشن کیا ہے"],
+    "answer_en": "A current location is a one-time location. Live location can keep sharing updates for a period of time. Check who will receive it and the duration before sending.",
+    "answer_ur": "موجودہ جگہ ایک بار کی جگہ ہوتی ہے۔ لائیو لوکیشن ایک مدت تک جگہ کی تازہ معلومات شیئر کر سکتی ہے۔ بھیجنے سے پہلے وصول کنندہ اور مدت دیکھیں۔"
+  },
+  {
+    "id": "whatsapp-send-photo",
+    "guide_id": "whatsapp-send-photo",
+    "question_en": "How do I send a photo in WhatsApp?",
+    "question_ur": "واٹس ایپ پر تصویر کیسے بھیجیں؟",
+    "match_phrases_en": ["how do i send a photo in whatsapp", "send a photo", "send a picture"],
+    "match_phrases_ur": ["واٹس ایپ پر تصویر کیسے بھیجیں", "تصویر کیسے بھیجیں"],
+    "answer_en": "Open the correct chat, tap the plus or attachment button, and choose Photos or Gallery. Select the picture, check the preview and contact name, then tap Send if you want to share it.",
+    "answer_ur": "درست چیٹ کھولیں، پلس یا منسلکہ کے بٹن پر ٹیپ کریں اور تصاویر یا گیلری منتخب کریں۔ تصویر منتخب کریں، پیش منظر اور رابطے کا نام دیکھیں، پھر شیئر کرنا چاہیں تو بھیجیں پر ٹیپ کریں۔"
+  },
+  {
+    "id": "whatsapp-send-file",
+    "guide_id": "whatsapp-send-photo",
+    "question_en": "How do I send a file in WhatsApp?",
+    "question_ur": "واٹس ایپ پر فائل کیسے بھیجیں؟",
+    "match_phrases_en": ["how do i send a file in whatsapp", "send a document in whatsapp", "send a file"],
+    "match_phrases_ur": ["واٹس ایپ پر فائل کیسے بھیجیں", "دستاویز کیسے بھیجیں"],
+    "answer_en": "Open the correct chat, tap the plus or attachment button, and choose Document or File. Select the file and check its name and the recipient before tapping Send.",
+    "answer_ur": "درست چیٹ کھولیں، پلس یا منسلکہ کے بٹن پر ٹیپ کریں اور دستاویز یا فائل منتخب کریں۔ فائل منتخب کرنے کے بعد اس کا نام اور وصول کنندہ دیکھیں، پھر بھیجیں پر ٹیپ کریں۔"
+  },
+  {
+    "id": "gmail-attach-file",
+    "guide_id": "gmail-attach-file",
+    "question_en": "How do I attach a file in Gmail?",
+    "question_ur": "جی میل میں فائل کیسے منسلک کریں؟",
+    "match_phrases_en": ["how do i attach a file in gmail", "attach a file to an email", "add an attachment in gmail"],
+    "match_phrases_ur": ["جی میل میں فائل کیسے لگائیں", "ای میل کے ساتھ فائل کیسے بھیجیں"],
+    "answer_en": "Compose an email, check the recipient, and tap the paperclip. Choose a file, wait for its name to appear, then check the attachment and recipient before tapping Send.",
+    "answer_ur": "ای میل لکھیں، وصول کنندہ کا پتا دیکھیں اور پیپرکلپ پر ٹیپ کریں۔ فائل منتخب کریں، اس کا نام ظاہر ہونے کا انتظار کریں، پھر بھیجنے سے پہلے فائل اور وصول کنندہ دوبارہ دیکھیں۔"
+  },
+  {
+    "id": "gmail-check-attachment",
+    "guide_id": "gmail-attach-file",
+    "question_en": "How can I check which file I attached in Gmail?",
+    "question_ur": "جی میل میں منسلک فائل کیسے دیکھیں؟",
+    "match_phrases_en": ["how can i check which file i attached in gmail", "check the attached file in gmail", "see which file is attached"],
+    "match_phrases_ur": ["جی میل میں منسلک فائل کیسے دیکھیں", "لگی ہوئی فائل کیسے چیک کریں"],
+    "answer_en": "Before sending, look for the file name shown in the message. If it is not the file you intended, remove it and choose the correct file. Check the recipient too.",
+    "answer_ur": "بھیجنے سے پہلے پیغام میں دکھایا گیا فائل کا نام دیکھیں۔ اگر یہ مطلوبہ فائل نہیں تو اسے ہٹا کر درست فائل منتخب کریں۔ وصول کنندہ کا پتا بھی دیکھیں۔"
+  }
+]

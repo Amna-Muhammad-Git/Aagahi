@@ -86,6 +86,10 @@ Returns the three fake sample bills. Keep the object structure identical to the 
     "account_number": "••••1234",
     "previous_balance": { "value": 0, "currency": "PKR" },
     "late_fee": null,
+    "suggested_questions": [
+      { "id": "amount-due-meaning", "question": "What does amount due mean?" },
+      { "id": "due-date-meaning", "question": "What does the due date mean?" }
+    ],
     "explanations": {
       "provider": "The company that sent this bill.",
       "amount_due": "The amount the bill says is due. Check the original bill before paying.",
@@ -178,7 +182,7 @@ The plan specifies `{ "error": "unreadable" }` for unparseable AI output; the co
 
 ### `POST /api/explain-screen`
 
-Accept multipart `file` (PNG/JPEG, max 5 MB) or JSON `{ "sample_id": "whatsapp-location-001" }`. The two screenshot IDs and results are provided by Person B in `screen-results.json`. Include multipart `sample_id` support for a consistent upload client. Cached screenshot outputs work offline; unsupported arbitrary uploads in cached-only mode return `503 mode_unavailable`.
+Accept multipart `file` (PNG/JPEG, max 5 MB) or JSON `{ "sample_id": "whatsapp-location-001" }`. The two screenshot IDs and results are in `Backend/data/screen-results.json`. Include multipart `sample_id` support for a consistent upload client. Cached screenshot outputs work offline; valid arbitrary uploads return `503 mode_unavailable` until live screen analysis is implemented.
 
 Success (`200`):
 
@@ -192,6 +196,9 @@ Success (`200`):
     "Tap the send button only if you want to share it."
   ],
   "confidence": "high",
+  "suggested_questions": [
+    { "id": "live-location-meaning", "question": "What is live location?" }
+  ],
   "safety_note": "Never share a password, one-time code (OTP), or PIN shown on a screen.",
   "mode": "cached"
 }
@@ -201,27 +208,29 @@ Success (`200`):
 
 ### `POST /api/ask-about-upload` (contextual bill/screenshot questions)
 
-The user may upload a bill, photo, or screenshot and ask a question about what is visible. This is separate from general Agahi support chat: it answers about the supplied content only. Accept JSON `{ "sample_id": "electricity-001", "question": "What does previous balance mean?" }` for a cached example or multipart fields `file` and `question` for an upload. Supported files are PDF/JPEG/PNG, up to 5 MB; image and screenshot support is required. Keep uploads in memory for this request only.
+The user may upload a bill, photo, or screenshot and ask a question about what is visible. This is separate from general Agahi support chat: it answers about the supplied content only. Accept JSON `{ "sample_id": "electricity-001", "question_id": "amount-due-meaning", "question": "What does amount due mean?" }` for a cached example or multipart fields `file` and `question` for an upload. `question_id` is optional when the exact suggested question text is sent. Supported files are PDF/JPEG/PNG, up to 5 MB; image and screenshot support is required. Keep uploads in memory for this request only.
 
 Success (`200`):
 
 ```json
 {
-  "answer": "Previous balance is an amount carried over from an earlier bill. This sample shows none. Check the original bill to confirm.",
+  "answer": "Amount due is the total this sample bill says is payable by its due date. Check the original bill before paying.",
   "confidence": "high",
   "mode": "cached",
   "safety_note": "This explanation may be wrong. Check the original bill or screen before acting."
 }
 ```
 
-Answer only what can be supported by the supplied file/sample. If not visible or unclear, say so; never guess, give payment advice, or ask the user to share credentials, OTPs, or PINs. Return plain text only. Validate answer length and shape; never expose provider text on parsing failures. Cached mode supports a small set of curated suggested questions for the three sample bills and two sample screenshots. For arbitrary questions with no cached answer, return `503 mode_unavailable` rather than implying an answer was generated. Live answers use the configured Grok or Gemini adapter only when live mode is enabled.
+Answer only what can be supported by the supplied file/sample. If not visible or unclear, say so; never guess, give payment advice, or ask the user to share credentials, OTPs, or PINs. Return plain text only. Validate answer length and shape; never expose provider text on parsing failures. Cached mode supports the suggested questions included with sample and screen responses. For arbitrary questions with no cached answer, return `503 mode_unavailable` rather than implying an answer was generated. Live answers use the configured Grok or Gemini adapter only when live mode is implemented and enabled.
+
+Errors: `400 missing_input`, `400 missing_question`, `400 conflicting_input`, `400 invalid_file_type`, `400 empty_file`, `404 sample_not_found`, `413 file_too_large`, `413 question_too_long`, and `503 mode_unavailable`. A cached sample only answers its listed `suggested_questions`; matching free text is case/spacing/punctuation normalized. Do not approximate a cached answer for a different question.
 
 ## 5. Data files and validation
 
 - `samples.json`: three fake sample bills, each with stable `id`, field values, and explanations.
 - `sample-results.json`: cached extraction result keyed by the same sample IDs. Keep it structurally identical to the success response.
 - `screen-results.json`: two cached screen outputs keyed by stable screenshot IDs.
-- `question-results.json`: curated cached answers keyed by sample ID and suggested question ID; these power offline suggested questions.
+- `question-results.json`: curated cached answers keyed by sample ID and suggested question ID; these power offline suggested questions on bills and screenshots.
 - `Frotend/src/data/glossary.json`: exactly 15 bilingual, plain-text entries imported into the frontend bundle.
 - `Frotend/src/data/guides.json`: authored guides bundled into the frontend and served by the optional guide API route.
 - Validate all JSON at startup (or validate on read) and fail clearly if shipped cache data is malformed. Validate provider output against an explicit schema before responding.

@@ -1,0 +1,39 @@
+[
+  {
+    "id": "whatsapp-location-001",
+    "app_name": "WhatsApp",
+    "description": "This sample screen lets you choose a contact and a location-sharing option.",
+    "steps": [
+      "Check the contact name at the top of the chat.",
+      "Choose a one-time current location or live location. Live location may continue sharing for a period of time.",
+      "If you choose live location, review the sharing duration shown on your screen.",
+      "Tap Send only if you want to share your location with this contact."
+    ],
+    "confidence": "high",
+    "safety_note": "Only share your location with someone you trust. Never share a password, one-time code (OTP), or PIN.",
+    "suggested_questions": [
+      { "id": "live-location-meaning", "question": "What is live location?" },
+      { "id": "location-sharing-choice", "question": "How do I choose whether to share my location?" }
+    ],
+    "mode": "cached"
+  },
+  {
+    "id": "gmail-attachment-001",
+    "app_name": "Gmail",
+    "description": "This sample compose screen shows an email with an attachment being added.",
+    "steps": [
+      "Check the recipient address before adding or sending a file.",
+      "Tap the paperclip icon to open the attachment choices.",
+      "Choose a file from your device, then select the document or photo.",
+      "Wait for the file name to appear in the email and check that it is the file you intended to share.",
+      "Review the message and recipient. Tap Send only when you are ready."
+    ],
+    "confidence": "high",
+    "safety_note": "Only attach files you intend to share. Never send a password, one-time code (OTP), or PIN.",
+    "suggested_questions": [
+      { "id": "attachment-meaning", "question": "What is an attachment?" },
+      { "id": "check-email-file", "question": "How can I check which file I attached?" }
+    ],
+    "mode": "cached"
+  }
+]

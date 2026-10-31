@@ -1,0 +1,105 @@
+[
+  {
+    "sample_id": "electricity-001",
+    "answers": [
+      {
+        "id": "amount-due-meaning",
+        "question": "What does amount due mean?",
+        "answer": "Amount due is the total this sample bill says is payable by its due date. Check the original bill before paying.",
+        "confidence": "high"
+      },
+      {
+        "id": "due-date-meaning",
+        "question": "What does the due date mean?",
+        "answer": "The due date is the deadline printed on this sample bill. The provider may list different charges after that date.",
+        "confidence": "high"
+      },
+      {
+        "id": "previous-balance-meaning",
+        "question": "What is the previous balance?",
+        "answer": "A previous balance is an amount carried over from an earlier bill. This sample shows no previous balance.",
+        "confidence": "high"
+      }
+    ]
+  },
+  {
+    "sample_id": "gas-001",
+    "answers": [
+      {
+        "id": "previous-balance-meaning",
+        "question": "What is the previous balance?",
+        "answer": "A previous balance is an amount carried over from an earlier bill. This gas sample lists PKR 450; the sample cannot tell whether it was paid later.",
+        "confidence": "high"
+      },
+      {
+        "id": "late-fee-meaning",
+        "question": "What is a late fee?",
+        "answer": "A late fee is an extra charge the provider may list when payment is made after the due date. No late fee amount is shown on this sample.",
+        "confidence": "high"
+      },
+      {
+        "id": "amount-due-meaning",
+        "question": "What does amount due mean?",
+        "answer": "Amount due is the total this sample bill says is payable by its due date. Check the original bill before paying.",
+        "confidence": "high"
+      }
+    ]
+  },
+  {
+    "sample_id": "water-001",
+    "answers": [
+      {
+        "id": "billing-period-meaning",
+        "question": "What is the billing period?",
+        "answer": "The billing period is the month or dates covered by the bill. This sample lists October 2026.",
+        "confidence": "high"
+      },
+      {
+        "id": "previous-balance-meaning",
+        "question": "Is there a previous balance?",
+        "answer": "A previous balance is not listed in this water sample. Check the original bill for any separate arrears or unpaid amount.",
+        "confidence": "high"
+      },
+      {
+        "id": "amount-due-meaning",
+        "question": "What does amount due mean?",
+        "answer": "Amount due is the total this sample bill says is payable by its due date. Check the original bill before paying.",
+        "confidence": "high"
+      }
+    ]
+  },
+  {
+    "sample_id": "whatsapp-location-001",
+    "answers": [
+      {
+        "id": "live-location-meaning",
+        "question": "What is live location?",
+        "answer": "Live location can keep sharing an updated location for a period of time. Check the contact and duration before you choose to share it.",
+        "confidence": "high"
+      },
+      {
+        "id": "location-sharing-choice",
+        "question": "How do I choose whether to share my location?",
+        "answer": "Check the contact name. Choose a one-time location or live location only if you want that person to see it. You can go back without sending.",
+        "confidence": "high"
+      }
+    ]
+  },
+  {
+    "sample_id": "gmail-attachment-001",
+    "answers": [
+      {
+        "id": "attachment-meaning",
+        "question": "What is an attachment?",
+        "answer": "An attachment is a photo or document added to an email. Check its file name and recipient before sending.",
+        "confidence": "high"
+      },
+      {
+        "id": "check-email-file",
+        "question": "How can I check which file I attached?",
+        "answer": "Look for the file name shown in the email before sending. If it is not the file you intended, remove it and choose the correct one.",
+        "confidence": "high"
+      }
+    ]
+  }
+]
