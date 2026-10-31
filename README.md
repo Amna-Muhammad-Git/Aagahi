@@ -2,7 +2,6 @@
 
 Aagahi is a learning tool for older adults (ages 55–75). It helps people understand bills and learn WhatsApp and Gmail tasks through plain-language explanations and step-by-step guidance. Aagahi teaches the user to act; it never pays bills, sends messages, or taps through an app for them.
 
-> Work on this project started on the hackathon build day.
 
 ## Project layout
 
@@ -130,16 +129,11 @@ Adjust text size, contrast, language (English or Urdu), and motion. Settings are
 - Voice input depends on browser support, microphone permissions, and browser-vendor services.
 - Urdu translations should be reviewed by a fluent Urdu speaker before submission.
 
-## Third-party credits
-
-- **Fonts:** Noto Sans, Noto Nastaliq Urdu, and Fraunces via Fontsource.
-- **Icons:** Lucide React.
-- **Photographs:** Add photographer names and licences before submission:
-  - `Frotend/public/images/hero.jpg` — photographer: _to be added_; licence: _to be added_.
-  - `Frotend/public/images/card-bills.jpg` — photographer: _to be added_; licence: _to be added_.
-  - `Frotend/public/images/card-whatsapp.jpg` — photographer: _to be added_; licence: _to be added_.
-  - `Frotend/public/images/card-gmail.jpg` — photographer: _to be added_; licence: _to be added_.
 
 ## AI tools used
 
-- _To be completed by the project team with an honest list of tools used._
+- Gemini / Groq
+
+## Live Demo
+
+https://aagahi-nunc.vercel.app
