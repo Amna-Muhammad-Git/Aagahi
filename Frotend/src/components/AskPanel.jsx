@@ -44,7 +44,7 @@ export default function AskPanel({ bill, sampleId, file, apiMode, suggested, sub
                 return;
             }
             const message = e.code === "mode_unavailable"
-                ? subject === "screen" ? "Typed questions need live mode. Please choose a suggested question." : "This demo can only answer the suggested questions. Please tap one of them."
+                ? "Live answers are unavailable right now. Please try a suggested question or check the original bill."
                 : friendlyError(e);
             const prefix = subject === "screen" ? "screen_error_" : "bills_error_";
             const errorKey = e.code === "mode_unavailable"
@@ -59,24 +59,24 @@ export default function AskPanel({ bill, sampleId, file, apiMode, suggested, sub
             <h2 id="ask-title"><UiText k={subject === "screen" ? "ask_screen_title" : "ask_bill_title"} english={`Ask a question about this ${subject}`} /></h2>
             <div className="chips">
                 {questions.map((s) => (
-                    <button key={s.key} className="chip" onClick={() => ask(s.text, s.key, t(suggestedUiKey(s.key)))} disabled={state.status === "loading"}>
+                    <button key={s.key} className="chip" type="button" onClick={() => { setQ(s.text); setState({ status: "idle" }); }} disabled={state.status === "loading"}>
                         <UiText k={suggestedUiKey(s.key)} english={s.text} />
                     </button>
                 ))}
             </div>
 
-            <form className="ask-form" onSubmit={(e) => { e.preventDefault(); ask(q); setQ(""); }}>
+            <form className="ask-form" onSubmit={(e) => { e.preventDefault(); ask(q); }}>
                 <input
                     value={q}
                     onChange={(e) => setQ(e.target.value)}
                     lang={settings.lang}
                     dir="auto"
-                    disabled={!canType}
-                    maxLength={300}
+                    disabled={!canType && !sampleId}
+                    maxLength={500}
                     aria-label={t("ask_input_label")}
-                    placeholder={canType ? t("ask_type_placeholder") : t("ask_type_live")}
+                    placeholder={t("ask_type_placeholder")}
                 />
-                <button className="btn btn-primary" type="submit" disabled={!canType || !q.trim() || state.status === "loading"}>
+                <button className="btn btn-primary" type="submit" disabled={(!canType && !sampleId) || !q.trim() || state.status === "loading"}>
                     <Send aria-hidden="true" /> <UiText k="ask_send" english="Ask" />
                 </button>
             </form>
