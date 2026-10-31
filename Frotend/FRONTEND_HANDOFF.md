@@ -43,8 +43,13 @@ Do not commit local `.env` files. The frontend must work without an AI key. Use 
 | POST | `/api/extract-bill` | Submit a sample ID or a bill upload |
 | POST | `/api/explain-screen` | Submit one of the cached screenshot IDs or an uploaded screenshot |
 | POST | `/api/ask-about-upload` | Ask a question about a selected bill/screenshot or uploaded file (live mode for arbitrary questions; curated cached questions offline) |
+| POST | `/api/support/chat` | Ask about Agahi, guides, WhatsApp, or email; voice transcripts use the same route |
 
 All routes use the base URL above. Uploads use `FormData` with the field name `file`; do not manually set the `Content-Type` header because the browser supplies the multipart boundary. Cached sample requests may send JSON `{ "sample_id": "electricity-001" }`; backend also accepts `sample_id` as a multipart text field.
+
+The support-chat JSON request is `{ "message": "How do I send a photo?", "guide_id": "whatsapp-send-photo", "language": "en" }`. `guide_id` and `language` are optional; language is `en` or `ur`. The response is `{ "reply": "...", "related_guide_ids": [], "mode": "cached" | "live" }`. There is no separate voice API route for the first version: use browser speech recognition, display the transcript for correction, send it as `message`, and optionally read the visible response aloud using speech synthesis.
+
+For responsiveness, acknowledge taps and microphone activation immediately, keep navigation/guides/cached examples local, and show a pending state for live requests. Never leave a pending state indefinitely; handle safe API errors and let the user retry or use a guide. Live network/AI latency cannot be eliminated or guaranteed.
 
 ## Data shapes
 

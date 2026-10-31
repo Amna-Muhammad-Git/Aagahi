@@ -17,12 +17,14 @@ This is the shared work order for Person A (frontend/content) and Person B (back
 
 **Both**
 
-- Read the two handoff documents and agree that backend routes/field names/IDs are frozen for the first integration.
+- Use the route, field, and ID contracts in the backend and frontend handoffs as the shared integration interface.
 - Confirm app folders, local run commands, and base URL (`http://localhost:4000`; frontend uses `VITE_API_BASE_URL`).
 - Use cached mode by default (`USE_CACHE=true`). Live AI, when enabled, uses a server-side provider adapter configured for either Grok or Gemini (`AI_PROVIDER=grok|gemini`); provider keys stay in `Backend/.env`.
+- Use browser speech recognition/synthesis for the first voice-query version; send transcripts to `POST /api/support/chat`. There is no separate voice route in the first version.
+- Keep the interface responsive: immediate UI acknowledgement, local guides/cached answers, short provider timeouts, and clear fallback states. Target local cached API requests under 150 ms p95; live network/model latency cannot be guaranteed.
 - Agree the chatbot purpose: Agahi product help and safe digital-task guidance, not account support, personal financial advice, or actions for the user.
 - Agree that voice is a teaching/support interaction and never operates WhatsApp, Gmail, payments, or the device for the user.
-- Treat chatbot and voice route shapes as provisional until both teammates choose the supported languages and voice architecture. Do not block the core app on that decision.
+- Use the documented support-chat shape (`message`, optional `guide_id` and `language`) for typed and spoken questions. Keep Grok/Gemini as a backend configuration choice; the frontend API does not depend on provider choice.
 - Keep all demo flows usable in cached mode.
 
 **Done when:** both can work independently against the documented JSON examples and know where to report contract changes.
@@ -125,8 +127,8 @@ This is the shared work order for Person A (frontend/content) and Person B (back
 
 **Both — contract first**
 
-- Agree supported languages, allowed topics, refusal behavior, response length, and how the active guide or uploaded bill/screenshot is passed as context.
-- Freeze a request/response example before either side implements it. Proposed route in backend handoff: `POST /api/support/chat`.
+- Use the agreed support-chat request/response schema in `Backend/BACKEND_HANDOFF.md`; supported language values are `en` and `ur`.
+- Keep contextual bill/screenshot questions on `/api/ask-about-upload`; general Agahi, WhatsApp, email, and guide questions use `/api/support/chat`.
 
 **Person A**
 
@@ -145,7 +147,7 @@ This is the shared work order for Person A (frontend/content) and Person B (back
 
 **Both — architecture decision first**
 
-- For the first voice-query path, use browser speech recognition/synthesis where supported and send recognized text to the support chat API; agree language and microphone UX before coding.
+- Use browser speech recognition/synthesis where supported and send recognized text to the support chat API.
 - Keep audio in the browser for the first version; do not add streamed audio/provider sessions unless there is time and a clear need. Never expose a permanent provider secret in frontend code.
 
 **Person A**

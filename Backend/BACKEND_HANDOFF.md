@@ -14,6 +14,13 @@ This is the shared contract for Person A (frontend/content) and Person B (backen
 - The product should feel professional and dignified. Accessibility for older adults means readable type, clear steps, and predictable controls—not childish visuals, language, or assumptions about ability.
 - WhatsApp and email guidance should cover common everyday tasks. Users can ask follow-up questions about guides by typing or speaking; voice input is converted to a question and answered with the same safe support service.
 
+### Latency and responsiveness
+
+- Zero delay cannot be guaranteed for live network/AI answers. The product must feel responsive: acknowledge taps/mic start immediately in the UI, never block navigation on AI, and use local/cached content for instant demo paths.
+- Target for local cached API requests: under 150 ms at the 95th percentile. This is a local development target, not a guarantee for remote hosting.
+- For live AI, show the pending state immediately, keep answers concise, and set a short provider timeout. If the provider is slow or unavailable, show a retry/fallback state instead of leaving the user waiting indefinitely.
+- Do not stream unvalidated provider output. Return only after schema/safety validation; cached answers are the fast path.
+
 ## 2. Ownership and agreed layout
 
 Keep the existing root folders `Backend/` and `Frotend/` (the latter is currently spelled that way). Suggested ownership:
@@ -45,8 +52,9 @@ Person B owns the JSON files in `Backend/data/`; Person A owns guides, mock scre
 - Frontend reads `VITE_API_BASE_URL`; for local development set it to `http://localhost:4000` (no trailing slash).
 - JSON routes use `Content-Type: application/json` responses and UTF-8. Upload routes use `multipart/form-data` with field name `file`; the browser must set the multipart boundary, so do not manually set that request header.
 - Enable CORS only for the configured frontend origin in development/hosting. Do not use wildcard origins with credentials.
-- All routes are prefixed `/api`. Health and sample/glossary retrieval are GET; extraction/helper are POST.
+- All routes are prefixed `/api`. Health, samples, and glossary are GET; extraction, screen help, upload questions, and support questions are POST.
 - Standard error body: `{ "error": "<stable_code>", "message": "<safe user-facing message>" }`. Never return stack traces, provider errors, or model text.
+- Support answer request shape is JSON. Voice input is transcribed in the browser and sent as the same `message` field; there is no separate voice API route in the first version.
 
 ## 4. Endpoints
 
@@ -267,15 +275,37 @@ Person B documents install/start commands in `Backend/README.md` and the root RE
 
 The original development plan listed chatbot and voice agent as cut/out-of-scope. The team has now added them back into the intended product scope. Treat this as a scope change and schedule these after the bill, guides, privacy, and cached backend paths work. Keep both assistants focused on teaching people how to use Agahi, bills, WhatsApp, and email; neither may take actions for the user or ask for passwords, OTPs, or PINs.
 
-Before implementation, Person A and Person B must agree on: what questions the support chatbot answers, what the voice agent can teach, supported languages (English/Urdu), whether speech runs in the browser or through a server provider, the chosen provider, and the demo's offline behavior. Do not expose provider keys in the browser. Until that is agreed, keep the endpoints below as proposed names, not a locked contract.
+The following text support contract is fixed for frontend/backend integration. Supported response language is selected with `language: "en" | "ur"`; when Urdu output is unavailable, return English. The AI provider remains a deployment choice between Grok and Gemini and does not change these API shapes. Voice uses browser speech recognition/synthesis where supported and reuses the text support route; do not add a voice session route for the first version.
 
-Proposed minimal API shape if the support agent runs through the backend:
+### `POST /api/support/chat`
 
-- `POST /api/support/chat`: JSON `{ "message": "...", "guide_id": "whatsapp-send-photo", "language": "en" }`; response `{ "reply": "...", "related_guide_ids": [], "mode": "cached" | "live" }`. `guide_id` and `language` are optional. Voice speech-to-text transcripts use the same `message` field as typed questions.
-- `POST /api/voice/session`: create a short-lived session or return safe session configuration; never return a permanent provider secret. Exact request/response depends on the chosen voice provider.
-- If voice is browser-local, the backend may only need a short-lived token route. Do not stream audio through Express unless the selected provider and available time make that necessary.
-- For the first voice-query version, prefer browser speech recognition where available, send only the transcript to `/api/support/chat`, then read the answer with speech synthesis. Provide visible text and typing fallbacks when speech is unsupported or microphone permission is denied.
-- Add `USE_CACHE=true` behavior for demo responses, provider timeouts, input length limits, and friendly safe errors. Do not store transcripts/audio or log request bodies by default.
+Request:
+
+```json
+{ "message": "How do I send a photo?", "guide_id": "whatsapp-send-photo", "language": "en" }
+```
+
+`guide_id` and `language` are optional; supported language values are `en` and `ur`.
+
+Success (`200`):
+
+```json
+{
+  "reply": "Open the chat, tap the attachment or plus button, choose Photos, select the picture, then tap Send.",
+  "related_guide_ids": ["whatsapp-send-photo"],
+  "mode": "cached"
+}
+```
+
+The reply teaches steps and does not perform them. In cached mode, answer curated/common questions; for unsupported questions return `503 mode_unavailable` with a friendly message and related guide suggestions. In live mode, use the configured Grok/Gemini adapter, validate the answer, keep it concise, and apply the safety rules above. Do not store chat history or log request content. Typed text and voice transcripts use the same request.
+
+Stable errors: `400 missing_input`, `413 message_too_long`, `503 mode_unavailable` or `provider_unavailable`, and `500 server_error`. Keep user-facing messages safe and short.
+
+### First-version voice contract
+
+- No separate backend voice route. Browser speech recognition captures a question; frontend shows the transcript and posts it to `/api/support/chat`. Browser speech synthesis may read the returned answer aloud.
+- Show typed input and visible text answers as fallbacks. Handle unsupported browser speech and microphone denial without blocking other features.
+- Do not persist audio/transcripts. Never ask for passwords, OTPs, or PINs.
 
 ## 12. Backend tasks divided into chunks
 
@@ -324,7 +354,7 @@ Each chunk should end with working behavior that Person A can integrate. Share t
 ### Chunk 6 — Customer support chatbot
 
 - Define allowed topics and boundaries with Person A (Agahi navigation, bill terms, using guides; no account support or personal financial advice).
-- Agree on `POST /api/support/chat` schema and English/Urdu behavior before coding.
+- Implement the agreed `POST /api/support/chat` schema with English/Urdu behavior and guide context.
 - Build a small curated FAQ/response cache first; add provider-backed answers only behind a flag if time permits.
 - Keep responses short, plain-language, and safe; refuse requests involving credentials, OTPs, PINs, payments, or actions on behalf of a user.
 - Avoid storing chat history. Frontend may hold the current conversation in memory only.
