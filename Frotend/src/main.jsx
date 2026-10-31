@@ -4,6 +4,8 @@ import { BrowserRouter } from "react-router-dom";
 import "@fontsource/noto-sans/400.css";
 import "@fontsource/noto-sans/700.css";
 import "@fontsource/noto-nastaliq-urdu/400.css";
+import "@fontsource/fraunces/600.css";
+import "@fontsource/fraunces/700.css";
 import "./index.css";
 import App from "./App";
 import { SettingsProvider } from "./context/SettingsContext";

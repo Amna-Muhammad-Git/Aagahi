@@ -24,6 +24,8 @@ export default function Settings() {
                 options={[["normal", "Standard"], ["high", "High contrast"]]} />
             <Group title="Language" value={settings.lang} onPick={(lang) => update({ lang })}
                 options={[["en", "English"], ["ur", "اردو"]]} />
+            <Group title="Gentle animations" value={settings.motion} onPick={(motion) => update({ motion })}
+                options={[["on", "On"], ["off", "Off"]]} />
         </div>
     );
 }
