@@ -19,7 +19,7 @@ export function SettingsProvider({ children }) {
         root.dataset.text = settings.text;
         root.dataset.contrast = settings.contrast;
         root.dataset.motion = settings.motion;
-        root.lang = settings.lang;
+        root.lang = "en";
         try { localStorage.setItem(KEY, JSON.stringify(settings)); } catch { /* storage unavailable */ }
     }, [settings]);
 

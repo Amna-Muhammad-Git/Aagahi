@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import Settings from "./pages/Settings";
@@ -11,13 +11,14 @@ import Privacy from "./pages/Privacy";
 import Ask from "./pages/Ask";
 
 export default function App() {
+  const { pathname } = useLocation();
   return (
     <Routes>
       <Route element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="bills" element={<Bills />} />
         <Route path="guides" element={<GuideLibrary />} />
-        <Route path="guides/:id" element={<GuideView />} />
+        <Route path="guides/:id" element={<GuideView key={pathname} />} />
         <Route path="screen-helper" element={<ScreenHelper />} />
         <Route path="ask" element={<Ask />} />
         <Route path="settings" element={<Settings />} />

@@ -139,26 +139,31 @@
         {
           "text": "Open WhatsApp and tap the name of the person you want to call.",
           "screen": "wa-list",
-          "hl": "Ayesha"
+          "hl": "Ayesha",
+          "text_ur": "واٹس ایپ کھولیں اور جس شخص کو کال کرنی ہے، اس کا نام دبائیں۔"
         },
         {
           "text": "Their chat opens. Look at the top right corner to find the video camera icon.",
           "screen": "wa-chat",
-          "hl": "video"
+          "hl": "video",
+          "text_ur": "ان کی گفتگو کھلے گی۔ اوپر دائیں طرف ویڈیو کیمرے کا نشان دیکھیں۔"
         },
         {
           "text": "Tap the video camera icon. If WhatsApp asks to use your camera and microphone, allow it only if you want to make the call.",
           "screen": "wa-chat",
-          "hl": "video"
+          "hl": "video",
+          "text_ur": "ویڈیو کیمرے کا نشان دبائیں۔ اگر واٹس ایپ کیمرہ اور مائیکروفون کی اجازت مانگے تو صرف اسی وقت دیں جب آپ کال کرنا چاہتے ہوں۔"
         },
         {
           "text": "Wait while it rings. The call starts when the other person answers.",
-          "screen": "wa-calling"
+          "screen": "wa-calling",
+          "text_ur": "گھنٹی بجنے تک انتظار کریں۔ دوسرا شخص جواب دے تو کال شروع ہو جائے گی۔"
         },
         {
           "text": "When you are finished, tap the red button to end the call.",
           "screen": "wa-calling",
-          "hl": "end"
+          "hl": "end",
+          "text_ur": "بات مکمل ہو جائے تو سرخ بٹن دبا کر کال بند کریں۔"
         }
       ]
     },
@@ -171,26 +176,31 @@
         {
           "text": "Open the chat with the person you want to talk to.",
           "screen": "wa-list",
-          "hl": "Ayesha"
+          "hl": "Ayesha",
+          "text_ur": "اس شخص کی گفتگو کھولیں جس سے بات کرنی ہے۔"
         },
         {
           "text": "Find the microphone icon on the right of the message box.",
           "screen": "wa-chat",
-          "hl": "mic"
+          "hl": "mic",
+          "text_ur": "پیغام لکھنے والی جگہ کے دائیں طرف مائیکروفون کا نشان تلاش کریں۔"
         },
         {
           "text": "Press and hold the microphone, then start speaking. Keep your finger on the screen.",
           "screen": "wa-recording",
-          "hl": "mic"
+          "hl": "mic",
+          "text_ur": "مائیکروفون کو دبا کر رکھیں اور بولنا شروع کریں۔ انگلی اسکرین پر رکھیں۔"
         },
         {
           "text": "Lift your finger when you are done and the message sends. To cancel instead, slide your finger to the left before letting go.",
           "screen": "wa-recording",
-          "hl": "mic"
+          "hl": "mic",
+          "text_ur": "بات مکمل ہو تو انگلی اٹھا دیں، پیغام بھیج دیا جائے گا۔ منسوخ کرنے کے لیے انگلی اٹھانے سے پہلے اسے بائیں طرف سرکائیں۔"
         },
         {
           "text": "Check that your voice message appears in the chat. Tap it to listen back.",
-          "screen": "wa-sent-voice"
+          "screen": "wa-sent-voice",
+          "text_ur": "دیکھیں کہ آپ کا آواز کا پیغام گفتگو میں آ گیا ہے۔ اسے دبا کر سنیں۔"
         }
       ]
     },
@@ -203,30 +213,36 @@
         {
           "text": "Open the chat with the person you want to share with.",
           "screen": "wa-list",
-          "hl": "Ayesha"
+          "hl": "Ayesha",
+          "text_ur": "اس شخص کی گفتگو کھولیں جس کے ساتھ اپنی جگہ بانٹنی ہے۔"
         },
         {
           "text": "Tap the plus (+) or paperclip button next to the message box.",
           "screen": "wa-chat",
-          "hl": "plus"
+          "hl": "plus",
+          "text_ur": "پیغام لکھنے والی جگہ کے پاس جمع (+) یا پیپر کلپ کا بٹن دبائیں۔"
         },
         {
           "text": "Choose Location from the menu.",
           "screen": "wa-attach",
-          "hl": "Location"
+          "hl": "Location",
+          "text_ur": "فہرست میں “Location” چنیں۔"
         },
         {
           "text": "WhatsApp may ask permission to use your location. Allow it only if you want to share.",
-          "screen": "wa-location"
+          "screen": "wa-location",
+          "text_ur": "واٹس ایپ آپ کی جگہ استعمال کرنے کی اجازت مانگ سکتا ہے۔ صرف اسی وقت اجازت دیں جب آپ جگہ بانٹنا چاہتے ہوں۔"
         },
         {
           "text": "Choose Send your current location for a one-time share, or Share live location to update while you move.",
           "screen": "wa-location",
-          "hl": "Send your current location"
+          "hl": "Send your current location",
+          "text_ur": "ایک بار جگہ بھیجنے کے لیے “Send your current location” چنیں، یا چلتے ہوئے جگہ بتانے کے لیے “Share live location” چنیں۔"
         },
         {
           "text": "Check the name at the top, then confirm. Only share your location with people you know.",
-          "screen": "wa-chat"
+          "screen": "wa-chat",
+          "text_ur": "اوپر نام دیکھ کر تصدیق کریں۔ اپنی جگہ صرف جاننے والوں کے ساتھ بانٹیں۔"
         }
       ]
     },
@@ -239,31 +255,37 @@
         {
           "text": "Open the chat with the person you want to send to.",
           "screen": "wa-list",
-          "hl": "Ayesha"
+          "hl": "Ayesha",
+          "text_ur": "اس شخص کی گفتگو کھولیں جسے تصویر یا فائل بھیجنی ہے۔"
         },
         {
           "text": "Tap the plus (+) or paperclip button next to the message box.",
           "screen": "wa-chat",
-          "hl": "plus"
+          "hl": "plus",
+          "text_ur": "پیغام لکھنے والی جگہ کے پاس جمع (+) یا پیپر کلپ کا بٹن دبائیں۔"
         },
         {
           "text": "Choose Gallery for a photo, or Document for a file.",
           "screen": "wa-attach",
-          "hl": "Gallery"
+          "hl": "Gallery",
+          "text_ur": "تصویر کے لیے “Gallery” اور فائل کے لیے “Document” چنیں۔"
         },
         {
           "text": "Tap the photo or file you want to send.",
           "screen": "wa-gallery",
-          "hl": "Photo 1"
+          "hl": "Photo 1",
+          "text_ur": "جس تصویر یا فائل کو بھیجنا ہے، اسے دبائیں۔"
         },
         {
           "text": "Check the picture and the name at the top. That person will receive it.",
-          "screen": "wa-gallery"
+          "screen": "wa-gallery",
+          "text_ur": "تصویر اور اوپر نام دیکھ لیں۔ یہ اسی شخص کو ملے گی۔"
         },
         {
           "text": "Tap the send arrow.",
           "screen": "wa-gallery",
-          "hl": "send"
+          "hl": "send",
+          "text_ur": "جب تیار ہوں تو بھیجنے کا تیر دبائیں۔"
         }
       ]
     },
@@ -276,31 +298,37 @@
         {
           "text": "Open Gmail and tap Compose to start a new email.",
           "screen": "gm-inbox",
-          "hl": "compose"
+          "hl": "compose",
+          "text_ur": "جی میل کھولیں اور نیا ای میل شروع کرنے کے لیے “Compose” دبائیں۔"
         },
         {
           "text": "Type the person's email address and a subject.",
-          "screen": "gm-compose"
+          "screen": "gm-compose",
+          "text_ur": "شخص کا ای میل پتہ اور موضوع لکھیں۔"
         },
         {
           "text": "Tap the paperclip icon at the top.",
           "screen": "gm-compose",
-          "hl": "paperclip"
+          "hl": "paperclip",
+          "text_ur": "اوپر پیپر کلپ کا نشان دبائیں۔"
         },
         {
           "text": "Choose Attach file, then pick the file from your phone.",
           "screen": "gm-attach-menu",
-          "hl": "Attach file"
+          "hl": "Attach file",
+          "text_ur": "“Attach file” چنیں، پھر فون سے فائل چنیں۔"
         },
         {
           "text": "Check that the file name appears in your email.",
           "screen": "gm-attached",
-          "hl": "Attached: bill.pdf"
+          "hl": "Attached: bill.pdf",
+          "text_ur": "دیکھیں کہ ای میل میں فائل کا نام دکھائی دے رہا ہے۔"
         },
         {
           "text": "Tap the send arrow when you are ready.",
           "screen": "gm-attached",
-          "hl": "send"
+          "hl": "send",
+          "text_ur": "جب تیار ہوں تو بھیجنے کا تیر دبائیں۔"
         }
       ]
     }

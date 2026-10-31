@@ -1,4 +1,5 @@
 import { Video, Phone, Mic, Plus, Paperclip, Send, PhoneOff, Pencil, MapPin, FileText, Image as ImageIcon } from "lucide-react";
+import UiText from "./UiText";
 
 const ICONS = {
     video: Video, phone: Phone, mic: Mic, plus: Plus, paperclip: Paperclip, send: Send,
@@ -42,7 +43,11 @@ export default function PhoneMock({ screen, hl }) {
                     </div>
                 )}
             </div>
+<<<<<<< HEAD
             <figcaption>Illustration of the {appName} screen</figcaption>
+=======
+            <figcaption><UiText k="mock_screen_caption" english={`Mock screen: a simplified drawing, not the real ${appName} app.`} /></figcaption>
+>>>>>>> 2af2900 (Add Urdu Language feature)
         </figure>
     );
 }
