@@ -6,7 +6,7 @@ const sampleResults = require("./data/sample-results.json");
 const screenResults = require("./data/screen-results.json");
 const questionResults = require("./data/question-results.json");
 const supportResponses = require("./data/support-responses.json");
-const { extractLiveBill, getProviderChain, ProviderFailure, UnsafeProviderOutput } = require("./ai-providers");
+const { extractLiveBill, answerBillQuestion, getProviderChain, ProviderFailure, UnsafeProviderOutput } = require("./ai-providers");
 const guideContent = require("../Frotend/src/data/guides.json");
 const guides = Array.isArray(guideContent) ? guideContent : guideContent.guides;
 const glossary = require("../Frotend/src/data/glossary.json");
@@ -411,7 +411,7 @@ function createApp() {
     return res.json(result);
   });
 
-  app.post("/api/ask-about-upload", upload.single("file"), (req, res) => {
+  app.post("/api/ask-about-upload", upload.single("file"), async (req, res) => {
     const sampleId = req.body?.sample_id;
     const questionId = req.body?.question_id;
     const question = req.body?.question;
@@ -456,10 +456,18 @@ function createApp() {
         });
       }
 
-      return res.status(503).json({
-        error: "mode_unavailable",
-        message: "Live questions about uploads are not available yet. Try a sample question instead.",
-      });
+      if (process.env.USE_CACHE !== "false") {
+        return res.status(503).json({ error: "mode_unavailable", message: "Live questions are turned off. Try a sample bill instead." });
+      }
+      try {
+        const result = await answerBillQuestion(req.file, question.trim(), {
+          onProviderFailure: (details) => console.warn("[Agahi AI] Provider attempt failed.", JSON.stringify(details)),
+        });
+        return res.json(result);
+      } catch (error) {
+        if (error instanceof UnsafeProviderOutput) return res.status(422).json({ error: "bill_unclear", message: "I could not find a reliable answer in this bill. Check the original bill." });
+        return res.status(503).json({ error: "provider_unavailable", message: "Bill questions are unavailable right now. Please try again." });
+      }
     }
 
     if (typeof sampleId !== "string" || sampleId.trim() === "") {
