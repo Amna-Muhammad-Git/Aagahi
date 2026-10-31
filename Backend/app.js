@@ -6,7 +6,7 @@ const sampleResults = require("./data/sample-results.json");
 const screenResults = require("./data/screen-results.json");
 const questionResults = require("./data/question-results.json");
 const supportResponses = require("./data/support-responses.json");
-const { extractLiveBill, answerBillQuestion, answerGeneralQuestion, getProviderChain, ProviderFailure, UnsafeProviderOutput } = require("./ai-providers");
+const { extractLiveBill, answerBillQuestion, answerGeneralQuestion, explainScreenImage, getProviderChain, ProviderFailure, UnsafeProviderOutput } = require("./ai-providers");
 const guideContent = require("../Frotend/src/data/guides.json");
 const guides = Array.isArray(guideContent) ? guideContent : guideContent.guides;
 const glossary = require("../Frotend/src/data/glossary.json");
@@ -366,7 +366,7 @@ function createApp() {
     });
   });
 
-  app.post("/api/explain-screen", upload.single("file"), (req, res) => {
+  app.post("/api/explain-screen", upload.single("file"), async (req, res) => {
     const sampleId = req.body?.sample_id;
 
     if (req.file && sampleId) {
@@ -391,10 +391,9 @@ function createApp() {
         });
       }
 
-      return res.status(503).json({
-        error: "mode_unavailable",
-        message: "Live screen help is not available yet. You can choose a sample screen instead.",
-      });
+      if (process.env.USE_CACHE !== "false") return res.status(503).json({ error: "mode_unavailable", message: "Live screen help is turned off. Choose a sample screen." });
+      try { const result=await explainScreenImage(req.file,{onProviderFailure:(details)=>console.warn("[Agahi AI] Provider attempt failed.",JSON.stringify(details))}); return res.json(result); }
+      catch(error){ if(error instanceof UnsafeProviderOutput)return res.status(422).json({error:"screen_unclear",message:"This screenshot is unclear. Try a clearer image."}); return res.status(503).json({error:"provider_unavailable",message:"Screen help is unavailable right now. Please try again."}); }
     }
 
     if (typeof sampleId !== "string" || sampleId.trim() === "") {
