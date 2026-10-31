@@ -7,6 +7,7 @@ import GuideView from "./pages/GuideView";
 import Placeholder from "./pages/Placeholder";
 import Bills from "./pages/Bills";
 import Privacy from "./pages/Privacy";
+import Ask from "./pages/Ask";
 
 export default function App() {
   return (
@@ -17,7 +18,7 @@ export default function App() {
         <Route path="guides" element={<GuideLibrary />} />
         <Route path="guides/:id" element={<GuideView />} />
         <Route path="screen-helper" element={<Placeholder title="Screen helper" />} />
-        <Route path="ask" element={<Placeholder title="Ask a question" />} />
+        <Route path="ask" element={<Ask />} />
         <Route path="settings" element={<Settings />} />
         <Route path="*" element={<Placeholder title="Page not found" />} />
         <Route path="privacy" element={<Privacy />} />

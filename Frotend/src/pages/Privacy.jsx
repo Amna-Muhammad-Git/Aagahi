@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Smartphone, Trash2, Ban, ChevronDown } from "lucide-react";
 import Reveal from "../components/Reveal";
 import { getHealth } from "../api/client";
+import PageHeader from "../components/PageHeader";
 
 const GLANCE = [
     {
@@ -76,35 +77,41 @@ function ModeNote() {
 
 export default function Privacy() {
     return (
-        <div className="container section">
-            <h1>Your privacy</h1>
-            <p>Aagahi is built to keep almost nothing. Here is what that means in plain words.</p>
+        <>
+            <PageHeader title="Your privacy">
+                Aagahi is built to keep almost nothing. Here is what that means in plain words.
+            </PageHeader>
 
-            <div className="glance">
-                {GLANCE.map(({ Icon, title, items }, i) => (
-                    <Reveal key={title} delay={i * 120}>
-                        <section className="glance-card">
-                            <span className="bubble"><Icon aria-hidden="true" /></span>
-                            <h2>{title}</h2>
-                            <ul>{items.map((t) => <li key={t}>{t}</li>)}</ul>
-                        </section>
-                    </Reveal>
-                ))}
+
+            <div className="container section">
+
+
+                <div className="glance">
+                    {GLANCE.map(({ Icon, title, items }, i) => (
+                        <Reveal key={title} delay={i * 120}>
+                            <section className="glance-card">
+                                <span className="bubble"><Icon aria-hidden="true" /></span>
+                                <h2>{title}</h2>
+                                <ul>{items.map((t) => <li key={t}>{t}</li>)}</ul>
+                            </section>
+                        </Reveal>
+                    ))}
+                </div>
+
+                <ModeNote />
+
+                <h2>Common questions</h2>
+                <div className="faq">
+                    {FAQ.map(({ q, a }) => (
+                        <details key={q}>
+                            <summary>{q}<ChevronDown className="chev-d" aria-hidden="true" /></summary>
+                            <div className="faq-body">{a.map((p) => <p key={p}>{p}</p>)}</div>
+                        </details>
+                    ))}
+                </div>
+
+                <p className="muted">Aagahi is a prototype made for a hackathon. If anything here is unclear, please ask a family member or someone you trust to read it with you.</p>
             </div>
-
-            <ModeNote />
-
-            <h2>Common questions</h2>
-            <div className="faq">
-                {FAQ.map(({ q, a }) => (
-                    <details key={q}>
-                        <summary>{q}<ChevronDown className="chev-d" aria-hidden="true" /></summary>
-                        <div className="faq-body">{a.map((p) => <p key={p}>{p}</p>)}</div>
-                    </details>
-                ))}
-            </div>
-
-            <p className="muted">Aagahi is a prototype made for a hackathon. If anything here is unclear, please ask a family member or someone you trust to read it with you.</p>
-        </div>
+        </>
     );
 }

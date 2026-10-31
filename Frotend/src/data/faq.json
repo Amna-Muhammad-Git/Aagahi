@@ -1,0 +1,114 @@
+[
+    {
+        "id": "photo",
+        "keywords": [
+            "photo",
+            "picture",
+            "gallery",
+            "send file",
+            "تصویر"
+        ],
+        "reply": "Open the chat and tap the plus or paperclip button. Choose Gallery for a photo, or Document for a file. Pick it, check the name at the top, then tap the send arrow.",
+        "related": [
+            "whatsapp-send-photo"
+        ]
+    },
+    {
+        "id": "video",
+        "keywords": [
+            "video",
+            "camera",
+            "ویڈیو"
+        ],
+        "reply": "Open the chat with the person, then tap the video camera icon at the top right. Wait for them to answer. To finish, tap the red button.",
+        "related": [
+            "whatsapp-video-call"
+        ]
+    },
+    {
+        "id": "voice",
+        "keywords": [
+            "voice message",
+            "voice note",
+            "microphone",
+            "record",
+            "وائس"
+        ],
+        "reply": "In the chat, press and hold the microphone icon next to the message box and speak. Lift your finger to send, or slide left before letting go to cancel.",
+        "related": [
+            "whatsapp-voice-message"
+        ]
+    },
+    {
+        "id": "location",
+        "keywords": [
+            "location",
+            "where i am",
+            "لوکیشن"
+        ],
+        "reply": "In the chat, tap the plus or paperclip button and choose Location. You can send your current location once, or share it live for a set time. Only share it with people you know.",
+        "related": [
+            "whatsapp-share-location"
+        ]
+    },
+    {
+        "id": "gmail",
+        "keywords": [
+            "gmail",
+            "email",
+            "attachment",
+            "attach",
+            "جی میل"
+        ],
+        "reply": "In Gmail, tap Compose, type the address, tap the paperclip icon, choose Attach file, pick the file, check its name appears, then tap send.",
+        "related": [
+            "gmail-attach-file"
+        ]
+    },
+    {
+        "id": "previous-balance",
+        "keywords": [
+            "previous balance",
+            "carried over",
+            "arrears"
+        ],
+        "reply": "A previous balance is an amount left unpaid from an earlier bill that has been added to this one. Check the original bill to confirm it.",
+        "related": []
+    },
+    {
+        "id": "late-fee",
+        "keywords": [
+            "late fee",
+            "penalty",
+            "surcharge"
+        ],
+        "reply": "A late fee is an extra charge added when a payment is made after the due date. Check the original bill to see if one applies.",
+        "related": []
+    },
+    {
+        "id": "spam",
+        "keywords": [
+            "spam",
+            "suspicious",
+            "scam",
+            "fraud",
+            "fake message"
+        ],
+        "reply": "Be careful with emails or messages that rush you or ask for passwords, codes or money. Do not open links or attachments you did not expect. Ask someone you trust before you act.",
+        "related": []
+    },
+    {
+        "id": "about",
+        "keywords": [
+            "what is aagahi",
+            "how does this work",
+            "how to use",
+            "what can you do",
+            "help"
+        ],
+        "reply": "Aagahi explains your bills in plain words and teaches you WhatsApp and Gmail tasks one step at a time. It never pays, sends or taps anything for you. Try the Bills page or pick a guide.",
+        "related": [
+            "whatsapp-video-call"
+        ]
+    }
+]

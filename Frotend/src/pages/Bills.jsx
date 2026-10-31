@@ -4,6 +4,7 @@ import { ERROR_COPY, extractBill, friendlyError, getHealth, getSamples } from ".
 import fallbackSamples from "../mocks/samples.json";
 import BillResult from "../components/BillResult";
 import AskPanel from "../components/AskPanel";
+import PageHeader from "../components/PageHeader";
 
 const MAX_BYTES = 5 * 1024 * 1024;
 const TYPES = ["application/pdf", "image/jpeg", "image/png"];
@@ -67,56 +68,62 @@ export default function Bills() {
     const money = (b) => (b.amount_due ? `${b.amount_due.currency} ${Number(b.amount_due.value).toLocaleString("en-US")}` : "");
 
     return (
-        <div className="container section">
-            <h1>Explain a bill</h1>
-            <p>Choose a sample bill to practise on, or upload your own. Agahi explains each part in plain words.</p>
+        <>
+            <PageHeader title="Explain a bill">
+                Choose a sample bill to practise on, or upload your own. Aagahi explains each part in plain words.
+            </PageHeader>
 
-            {offline && <p className="notice">Not connected to the Agahi server. Showing built-in example bills.</p>}
 
-            <h2>Try a sample bill</h2>
-            {samples.length === 0 && <p>Loading sample bills…</p>}
-            <div className="sample-grid">
-                {samples.map((b) => (
-                    <button key={b.id} className="sample" aria-pressed={current?.sampleId === b.id} onClick={() => pickSample(b)}>
-                        <strong>{b.provider}</strong>
-                        <small>Sample bill · {money(b)}</small>
+            <div className="container section">
+
+
+                {offline && <p className="notice">Not connected to the Agahi server. Showing built-in example bills.</p>}
+
+                <h2>Try a sample bill</h2>
+                {samples.length === 0 && <p>Loading sample bills…</p>}
+                <div className="sample-grid">
+                    {samples.map((b) => (
+                        <button key={b.id} className="sample" aria-pressed={current?.sampleId === b.id} onClick={() => pickSample(b)}>
+                            <strong>{b.provider}</strong>
+                            <small>Sample bill · {money(b)}</small>
+                        </button>
+                    ))}
+                </div>
+
+                <h2>Or upload your own</h2>
+                <div className="upload">
+                    <label className="drop">
+                        <Upload aria-hidden="true" />
+                        <span><strong>Choose a file</strong><small>PDF, JPG or PNG, up to 5 MB</small></span>
+                        <input type="file" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" onChange={chooseFile} />
+                    </label>
+                    {file && <p className="picked"><FileText aria-hidden="true" /> {file.name}</p>}
+                    <button className="btn btn-primary" disabled={!file || loading} onClick={submitUpload}>
+                        {loading ? "Reading your bill…" : "Explain this bill"}
                     </button>
-                ))}
-            </div>
-
-            <h2>Or upload your own</h2>
-            <div className="upload">
-                <label className="drop">
-                    <Upload aria-hidden="true" />
-                    <span><strong>Choose a file</strong><small>PDF, JPG or PNG, up to 5 MB</small></span>
-                    <input type="file" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" onChange={chooseFile} />
-                </label>
-                {file && <p className="picked"><FileText aria-hidden="true" /> {file.name}</p>}
-                <button className="btn btn-primary" disabled={!file || loading} onClick={submitUpload}>
-                    {loading ? "Reading your bill…" : "Explain this bill"}
-                </button>
-            </div>
-            <p className="muted">Your file is used for this request only and is not saved.</p>
-
-            {error && (
-                <div className="error" role="alert">
-                    <span>{error}</span>
-                    {file && !loading && <button className="btn btn-secondary" onClick={submitUpload}>Try again</button>}
                 </div>
-            )}
+                <p className="muted">Your file is used for this request only and is not saved.</p>
 
-            {current && (
-                <div ref={resultRef}>
-                    <BillResult bill={current.bill} />
-                    <AskPanel
-                        key={current.sampleId || current.file?.name}
-                        bill={current.bill}
-                        sampleId={current.sampleId}
-                        file={current.file}
-                        apiMode={apiMode}
-                    />
-                </div>
-            )}
-        </div>
+                {error && (
+                    <div className="error" role="alert">
+                        <span>{error}</span>
+                        {file && !loading && <button className="btn btn-secondary" onClick={submitUpload}>Try again</button>}
+                    </div>
+                )}
+
+                {current && (
+                    <div ref={resultRef}>
+                        <BillResult bill={current.bill} />
+                        <AskPanel
+                            key={current.sampleId || current.file?.name}
+                            bill={current.bill}
+                            sampleId={current.sampleId}
+                            file={current.file}
+                            apiMode={apiMode}
+                        />
+                    </div>
+                )}
+            </div>
+        </>
     );
 }

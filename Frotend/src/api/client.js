@@ -73,3 +73,18 @@ export function askAboutUpload({ file, sampleId, question }) {
     }
     return postJson("/api/ask-about-upload", { sample_id: sampleId, question });
 }
+export const supportChat = ({ message, guideId, language }) =>
+    postJson("/api/support/chat", {
+        message,
+        ...(guideId ? { guide_id: guideId } : {}),
+        ...(language ? { language } : {}),
+    });
+
+export function explainScreen({ file, sampleId }) {
+    if (file) {
+        const fd = new FormData();
+        fd.append("file", file);
+        return request("/api/explain-screen", { method: "POST", body: fd });
+    }
+    return postJson("/api/explain-screen", { sample_id: sampleId });
+}
