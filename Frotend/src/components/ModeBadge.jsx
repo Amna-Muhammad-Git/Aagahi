@@ -3,7 +3,7 @@ import { getHealth } from "../api/client";
 
 const LABEL = {
     checking: "Checking connection…",
-    cached: "Demo mode: prepared answers",
+    cached: "Prepared guidance",
     live: "Live mode: AI answers",
     offline: "Server not connected: built-in examples",
 };

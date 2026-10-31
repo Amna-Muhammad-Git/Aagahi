@@ -57,7 +57,7 @@ export default function GuideView() {
                     {last && <p className="done"><Check aria-hidden="true" /> You have reached the last step. Well done!</p>}
                 </div>
                 {step.image
-                    ? <figure className="mock"><img src={step.image} alt="" /><figcaption>Mock screen, not the real app.</figcaption></figure>
+                    ? <figure className="mock"><img src={step.image} alt="Illustration for this guide step" /><figcaption>Illustration</figcaption></figure>
                     : <PhoneMock screen={data.screens[step.screen]} hl={step.hl} />}
             </div>
 

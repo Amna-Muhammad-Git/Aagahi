@@ -29,7 +29,7 @@ export default function Layout() {
             <footer className="footer">
                 <div className="container">
                     <p><ModeBadge /></p>
-                    <p>Agahi is a learning tool. AI explanations can be wrong, so check the original bill. WhatsApp and Gmail screens in guides are recreated mock screens.</p>
+                    <p>Agahi helps you understand everyday bills and learn how to use WhatsApp and Gmail, with clear guidance in English and Urdu. AI explanations may be incorrect, so always check the original bill or app before taking action.</p>
                     <p><Link to="/privacy">Privacy</Link> · <Link to="/settings">Settings</Link></p>
                 </div>
             </footer>

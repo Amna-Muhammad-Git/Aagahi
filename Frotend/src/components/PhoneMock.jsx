@@ -42,7 +42,7 @@ export default function PhoneMock({ screen, hl }) {
                     </div>
                 )}
             </div>
-            <figcaption>Mock screen: a simplified drawing, not the real {appName} app.</figcaption>
+            <figcaption>Illustration of the {appName} screen</figcaption>
         </figure>
     );
 }
