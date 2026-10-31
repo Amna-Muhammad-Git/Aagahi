@@ -8,13 +8,16 @@ import "@fontsource/fraunces/600.css";
 import "@fontsource/fraunces/700.css";
 import "./index.css";
 import App from "./App";
+import { GlossaryProvider } from "./context/GlossaryContext";
 import { SettingsProvider } from "./context/SettingsContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
       <SettingsProvider>
-        <App />
+        <GlossaryProvider>
+          <App />
+        </GlossaryProvider>
       </SettingsProvider>
     </BrowserRouter>
   </React.StrictMode>
