@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Send } from "lucide-react";
 import { askAboutUpload, friendlyError } from "../api/client";
 
-const SUGGESTED = [
+const BILL_SUGGESTED = [
     { key: "previous_balance", text: "What does previous balance mean?" },
     { key: "due_date", text: "When is this bill due?" },
     { key: "late_fee", text: "Is there a late fee?" },
@@ -14,10 +14,11 @@ const SOURCE = {
 };
 const NOTE = "This explanation may be wrong. Check the original bill before acting.";
 
-export default function AskPanel({ bill, sampleId, file, apiMode }) {
+export default function AskPanel({ bill, sampleId, file, apiMode, suggested, subject = "bill" }) {
     const [q, setQ] = useState("");
     const [state, setState] = useState({ status: "idle" });
     const canType = apiMode === "live";
+    const questions = suggested || BILL_SUGGESTED;
 
     async function ask(question, key) {
         const text = question.trim();
@@ -27,13 +28,13 @@ export default function AskPanel({ bill, sampleId, file, apiMode }) {
             const r = await askAboutUpload({ sampleId, file, question: text });
             setState({ status: "done", question: text, ...r });
         } catch (e) {
-            const offlineAnswer = sampleId && key && (e.code === "network" || e.code === "timeout") && bill.explanations?.[key];
+            const offlineAnswer = sampleId && key && (e.code === "network" || e.code === "timeout") && (subject === "screen" ? bill?.[key] : bill?.explanations?.[key]);
             if (offlineAnswer) {
-                setState({ status: "done", question: text, answer: `${offlineAnswer} Check the original bill to confirm.`, confidence: "medium", mode: "offline", safety_note: NOTE });
+                setState({ status: "done", question: text, answer: subject === "screen" ? offlineAnswer : `${offlineAnswer} Check the original bill to confirm.`, confidence: "medium", mode: subject === "screen" ? "builtin" : "offline", safety_note: NOTE });
                 return;
             }
             const message = e.code === "mode_unavailable"
-                ? "This demo can only answer the suggested questions. Please tap one of them."
+                ? subject === "screen" ? "Typed questions need live mode. Please choose a suggested question." : "This demo can only answer the suggested questions. Please tap one of them."
                 : friendlyError(e);
             setState({ status: "error", question: text, message });
         }
@@ -41,9 +42,9 @@ export default function AskPanel({ bill, sampleId, file, apiMode }) {
 
     return (
         <section className="ask-panel" aria-labelledby="ask-title">
-            <h2 id="ask-title">Ask a question about this bill</h2>
+            <h2 id="ask-title">Ask a question about this {subject}</h2>
             <div className="chips">
-                {SUGGESTED.map((s) => (
+                {questions.map((s) => (
                     <button key={s.key} className="chip" onClick={() => ask(s.text, s.key)} disabled={state.status === "loading"}>
                         {s.text}
                     </button>
@@ -71,7 +72,7 @@ export default function AskPanel({ bill, sampleId, file, apiMode }) {
                     <div className="answer">
                         <p className="q">{state.question}</p>
                         <p>{state.answer}</p>
-                        <p className="muted"><span className="tag">{SOURCE[state.mode] || SOURCE.cached}</span></p>
+                        <p className="muted"><span className="tag">{state.mode === "builtin" ? "Built-in answer" : SOURCE[state.mode] || SOURCE.cached}</span></p>
                         <p className="muted">{state.safety_note || NOTE}</p>
                     </div>
                 )}
