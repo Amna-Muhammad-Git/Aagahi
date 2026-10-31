@@ -6,7 +6,7 @@ const sampleResults = require("./data/sample-results.json");
 const screenResults = require("./data/screen-results.json");
 const questionResults = require("./data/question-results.json");
 const supportResponses = require("./data/support-responses.json");
-const { extractLiveBill, answerBillQuestion, getProviderChain, ProviderFailure, UnsafeProviderOutput } = require("./ai-providers");
+const { extractLiveBill, answerBillQuestion, answerGeneralQuestion, getProviderChain, ProviderFailure, UnsafeProviderOutput } = require("./ai-providers");
 const guideContent = require("../Frotend/src/data/guides.json");
 const guides = Array.isArray(guideContent) ? guideContent : guideContent.guides;
 const glossary = require("../Frotend/src/data/glossary.json");
@@ -242,7 +242,7 @@ function createApp() {
     );
   });
 
-  app.post("/api/support/chat", (req, res) => {
+  app.post("/api/support/chat", async (req, res) => {
     const { message, guide_id: guideId, language = "en" } = req.body || {};
 
     if (typeof message !== "string" || !message.trim()) {
@@ -272,11 +272,15 @@ function createApp() {
 
     const matched = matchSupportResponse(message.trim(), guideId);
     if (!matched) {
-      return res.status(503).json({
-        error: "mode_unavailable",
-        message: "I do not have a reviewed answer for that question yet. Try a suggested question or open a guide.",
-        related_guide_ids: guideId ? [guideId] : [],
+      if (process.env.USE_CACHE !== "false") return res.status(503).json({
+        error: "mode_unavailable", message: "I do not have a prepared answer. Turn on live answers or try a guide.", related_guide_ids: guideId ? [guideId] : [],
       });
+      try {
+        const result = await answerGeneralQuestion(message.trim(), { language, guideId, onProviderFailure: (details) => console.warn("[Agahi AI] Provider attempt failed.", JSON.stringify(details)) });
+        return res.json(result);
+      } catch {
+        return res.status(503).json({ error: "provider_unavailable", message: "Live answers are unavailable right now. Please try again." });
+      }
     }
 
     return res.json({

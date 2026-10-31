@@ -519,9 +519,39 @@ async function answerBillQuestion(file, question, { env = process.env, fetchImpl
   throw new ProviderFailure(false);
 }
 
+async function answerGeneralQuestion(message, { language = "en", guideId = null, env = process.env, fetchImpl = fetch, onProviderFailure = () => {} } = {}) {
+  const chain = getProviderChain(env);
+  if (!chain.length) throw new ProviderFailure(false);
+  const guide = guideId ? require("../Frotend/src/data/guides.json").guides.find((g) => g.id === guideId) : null;
+  const guideContext = guide ? ` Relevant guide context: ${JSON.stringify(guide.steps)}.` : "";
+  const system = `You are Agahi, a patient, respectful assistant for older adults in Pakistan. Answer the user's question briefly in ${language === "ur" ? "Urdu" : "English"}, using plain language. Give practical step-by-step help for WhatsApp, Gmail, common bills, and basic phone use. Never claim to see the user's screen or act on their behalf. Do not invent current facts or give medical, legal, financial, or emergency advice. Never ask for passwords, PINs, OTPs, or bank credentials. If the question is outside scope or uncertain, say so and suggest a trusted person or official service. ${guideContext}`;
+  for (let i=0;i<chain.length;i++) {
+    const provider=chain[i];
+    try {
+      let answer;
+      if(provider.name === "gemini") {
+        const model=provider.model||"gemini-3.8-flash";
+        const response=await fetchWithTimeout(fetchImpl,`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,{method:"POST",headers:{"Content-Type":"application/json","x-goog-api-key":provider.key},body:JSON.stringify({contents:[{parts:[{text:`${system}\nUser: ${message}`}]}],generationConfig:{temperature:0.2,maxOutputTokens:350}})},"gemini","support_chat",GEMINI_TIMEOUT_MS);
+        const data=await readProviderJson(response,"gemini","support_chat"); answer=data.candidates?.[0]?.content?.parts?.find(p=>p.text)?.text;
+      } else if(provider.name === "groq") {
+        const response=await fetchWithTimeout(fetchImpl,"https://api.groq.com/openai/v1/chat/completions",{method:"POST",headers:{Authorization:`Bearer ${provider.key}`,"Content-Type":"application/json"},body:JSON.stringify({model:provider.model||"qwen/qwen3.8-27b",temperature:0.2,max_completion_tokens:350,messages:[{role:"system",content:system},{role:"user",content:message}]})},"groq","support_chat",GROK_INFERENCE_TIMEOUT_MS);
+        const data=await readProviderJson(response,"groq","support_chat"); answer=data.choices?.[0]?.message?.content;
+      } else { throw new ProviderFailure(false,{provider:provider.name,stage:"support_chat",category:"unsupported_provider"}); }
+      if(typeof answer!=="string"||!answer.trim()||answer.length>1800) throw new UnsafeProviderOutput();
+      return {reply:answer.trim(),related_guide_ids:guideId?[guideId]:[],mode:"live"};
+    } catch(error) {
+      if(error instanceof UnsafeProviderOutput) throw error;
+      if(error instanceof ProviderFailure) onProviderFailure({provider:error.provider,stage:error.stage,category:error.category,status:error.status,providerCode:error.providerCode,errorHint:error.errorHint});
+      if(!(error instanceof ProviderFailure)||!error.retryable||i===chain.length-1) throw new ProviderFailure(false);
+    }
+  }
+  throw new ProviderFailure(false);
+}
+
 module.exports = {
   extractLiveBill,
   answerBillQuestion,
+  answerGeneralQuestion,
   getProviderChain,
   ProviderFailure,
   UnsafeProviderOutput,
