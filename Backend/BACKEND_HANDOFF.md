@@ -238,3 +238,85 @@ Person B documents install/start commands in `Backend/README.md` and the root RE
 5. Add upload validation, in-memory handling, size/type errors, and safe logging defaults.
 6. Add Claude live mode behind `USE_CACHE=false`; validate provider JSON and mask data before response.
 7. Complete backend README/setup notes and the integration-ready checklist. Freeze live mode if it is not stable; submit with cached mode.
+
+## 11. Revised scope: support chatbot and voice agent
+
+The original development plan listed chatbot and voice agent as cut/out-of-scope. The team has now added them back into the intended product scope. Treat this as a scope change and schedule these after the bill, guides, privacy, and cached backend paths work. Keep both assistants focused on teaching people how to use Agahi and common digital tasks; neither may take actions for the user or ask for passwords, OTPs, or PINs.
+
+Before implementation, Person A and Person B must agree on: what questions the support chatbot answers, what the voice agent can teach, supported languages (English/Urdu), whether speech runs in the browser or through a server provider, the chosen provider, and the demo's offline behavior. Do not expose provider keys in the browser. Until that is agreed, keep the endpoints below as proposed names, not a locked contract.
+
+Proposed minimal API shape if the agent runs through the backend:
+
+- `POST /api/support/chat`: JSON `{ "message": "...", "history": [] }`; response `{ "reply": "...", "mode": "cached" | "live" }`.
+- `POST /api/voice/session`: create a short-lived session or return safe session configuration; never return a permanent provider secret. Exact request/response depends on the chosen voice provider.
+- If voice is browser-local, the backend may only need a short-lived token route. Do not stream audio through Express unless the selected provider and available time make that necessary.
+- Add `USE_CACHE=true` behavior for demo responses, provider timeouts, input length limits, and friendly safe errors. Do not store transcripts/audio or log request bodies by default.
+
+## 12. Backend tasks divided into chunks
+
+Each chunk should end with working behavior that Person A can integrate. Share the route, response example, sample IDs, and any changed assumptions as soon as a chunk is ready.
+
+### Chunk 1 — Project and server foundation
+
+- Initialize the Node project in `Backend/`; add Express and environment loading.
+- Create the app/server entry points and port configuration.
+- Set up CORS for the frontend origin, JSON handling, and a final safe error handler.
+- Add `GET /api/health` with effective mode.
+- Add `.env.example`, `.gitignore` entries for `.env` and dependencies, and basic backend run instructions.
+- **Ready when:** server starts locally and Person A can call health from the frontend.
+
+### Chunk 2 — Fake bills and cached bill API
+
+- Write three fake bills with stable IDs and masked account numbers.
+- Write matching cached result data, explanations, and explicit `null` values for unknown fields.
+- Add `GET /api/samples` and `POST /api/extract-bill` for `sample_id` requests.
+- Add stable error codes for missing/unknown sample input.
+- **Ready when:** each sample ID returns predictable JSON that matches the frontend contract, with no AI key or provider request.
+
+### Chunk 3 — Glossary and screen helper cache
+
+- Add 15 glossary entries with English and optional Urdu.
+- Add two cached screenshot results, each with 3–5 steps and the safety note.
+- Add `GET /api/glossary` and cached `POST /api/explain-screen` by sample ID.
+- **Ready when:** glossary and screen helper work in cached mode and the frontend can render them.
+
+### Chunk 4 — Upload validation and privacy controls
+
+- Add in-memory multipart file handling for supported routes.
+- Enforce PDF/JPG/PNG type and 5 MB limit; reject empty/invalid files clearly.
+- Ensure no file is written to disk and request bodies/content are not logged.
+- Return consistent safe errors for wrong type, oversized file, missing input, and unreadable content.
+- **Ready when:** bad uploads fail cleanly and sample/cache flows still work.
+
+### Chunk 5 — Live bill extraction (optional, after core)
+
+- Integrate Claude behind `USE_CACHE=false` and server-only environment key.
+- Preprocess PDFs/images in memory; send only what is necessary.
+- Validate model JSON, normalize values, mask account number before response, reject guesses, and never expose raw model text.
+- Handle timeout/provider failure with safe errors; cached mode remains the default.
+- **Ready when:** live mode passes sample checks and cached mode works without the provider. If unstable, freeze/omit live mode for the demo.
+
+### Chunk 6 — Customer support chatbot
+
+- Define allowed topics and boundaries with Person A (Agahi navigation, bill terms, using guides; no account support or personal financial advice).
+- Agree on `POST /api/support/chat` schema and English/Urdu behavior before coding.
+- Build a small curated FAQ/response cache first; add provider-backed answers only behind a flag if time permits.
+- Keep responses short, plain-language, and safe; refuse requests involving credentials, OTPs, PINs, payments, or actions on behalf of a user.
+- Avoid storing chat history. Frontend may hold the current conversation in memory only.
+- **Ready when:** a cached support conversation works without AI/network, and all fallback/error cases are defined.
+
+### Chunk 7 — Voice agent
+
+- Agree with Person A on the interaction and provider architecture before choosing routes: browser speech APIs, a voice provider, or server-mediated audio.
+- Set the voice agent's job as spoken teaching/support; it must not make calls, send messages, make payments, or operate apps.
+- Prefer a short-lived token/session pattern if using a hosted provider. Keep secrets on the server and transcripts/audio out of persistent storage.
+- Provide a text fallback and a clear unavailable state. Cached demo must still work if voice service/network is down (for example, scripted sample conversation or spoken guide playback, clearly labelled).
+- **Ready when:** user can start and end the voice interaction, see/hear a safe response, recover from service failure, and switch to text/guide instructions.
+
+### Chunk 8 — Integration, documentation, and release readiness
+
+- Send Person A final route list and examples; resolve mismatches in both handoff docs before changing code.
+- Document env vars, start commands, cached/live mode, chatbot, voice limitations, and privacy behavior.
+- Walk through the full cached demo with no AI credentials; confirm optional AI/voice features fail gracefully.
+- Confirm no `.env`, provider key, uploaded content, or request bodies appear in Git/logs.
+- **Ready when:** frontend and backend run together with cached mode as the dependable path and the README accurately describes what is live, cached, and mocked.
