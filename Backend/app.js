@@ -392,8 +392,8 @@ function createApp() {
       }
 
       if (process.env.USE_CACHE !== "false") return res.status(503).json({ error: "mode_unavailable", message: "Live screen help is turned off. Choose a sample screen." });
-      try { const result=await explainScreenImage(req.file,{onProviderFailure:(details)=>console.warn("[Agahi AI] Provider attempt failed.",JSON.stringify(details))}); return res.json(result); }
-      catch(error){ if(error instanceof UnsafeProviderOutput)return res.status(422).json({error:"screen_unclear",message:"This screenshot is unclear. Try a clearer image."}); return res.status(503).json({error:"provider_unavailable",message:"Screen help is unavailable right now. Please try again."}); }
+      try { const result = await explainScreenImage(req.file, { onProviderFailure: (details) => console.warn("[Agahi AI] Provider attempt failed.", JSON.stringify(details)) }); return res.json(result); }
+      catch (error) { if (error instanceof UnsafeProviderOutput) return res.status(422).json({ error: "screen_unclear", message: "This screenshot is unclear. Try a clearer image." }); return res.status(503).json({ error: "provider_unavailable", message: "Screen help is unavailable right now. Please try again." }); }
     }
 
     if (typeof sampleId !== "string" || sampleId.trim() === "") {
@@ -588,4 +588,4 @@ function createApp() {
   return app;
 }
 
-module.exports = { createApp };
+module.exports = createApp();
