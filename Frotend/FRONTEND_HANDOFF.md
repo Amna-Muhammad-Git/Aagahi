@@ -19,6 +19,7 @@ Person A owns:
 - Searchable guide library for common WhatsApp and email tasks, with text and voice follow-up questions.
 - Recreated WhatsApp/Gmail mock screens. Label them clearly as mock screens; they are not the real apps.
 - Text size, high contrast, Urdu fonts, responsive behavior, and large controls.
+- Optional newspaper directory linking to curated publisher websites.
 - Frontend README section and demo recording support.
 
 Person B owns the Express API and backend data. Do not import files directly from `Backend/`; consume the API so each person can work in their own folder.
@@ -30,6 +31,8 @@ Read the API base URL from Vite environment configuration:
 ```dotenv
 VITE_API_BASE_URL=http://localhost:4000
 ```
+
+Vite serves the frontend at `http://localhost:5173` with `strictPort` enabled; the backend API listens at `http://localhost:4000`. These are separate services and need different ports. If port 5173 is occupied, stop the other process instead of letting Vite silently move to another port, because backend CORS is configured for `http://localhost:5173`.
 
 Do not commit local `.env` files. The frontend must work without an AI key. Use one small API client module (for example `src/api/client.js`) to build URLs and handle JSON/error responses consistently. Keep API error branching based on the stable `error` code, not message text.
 
@@ -142,6 +145,10 @@ Errors have a stable code, usually `{ "error": "unreadable", "message": "We coul
 |---|---|
 | `missing_input` | Ask the user to choose a sample or file |
 | `invalid_file_type` | Explain accepted formats: PDF, JPG, PNG |
+| `empty_file` | Ask the user to choose a file that contains content |
+| `conflicting_input` | Ask the user to choose either a sample or an upload |
+| `invalid_upload_field` | Ask the user to upload one file using the file control |
+| `invalid_upload` | Ask the user to check the upload and retry |
 | `file_too_large` | Explain the 5 MB limit and offer retry |
 | `sample_not_found` | Show a friendly unavailable-sample message |
 | `unreadable` | Offer a retry with a clearer image or sample |
@@ -157,6 +164,13 @@ Uploads are limited to 5 MB. Disable repeated submit while a request is pending,
 - Large, obvious tiles for bill help, WhatsApp guides, Gmail guide, and privacy.
 - Privacy must be reachable in two taps or fewer.
 - Add Urdu labels where available, with English fallback.
+
+### Newspaper links (optional)
+
+- Show a small, curated directory of newspaper websites as clearly labelled links. Store publisher name, short description, optional Urdu label, and destination URL in local frontend data; no backend route or news scraping is needed.
+- Opening a link leaves Agahi and requires an internet connection. Say this before the user opens it; do not imply newspaper content works offline or inherits Agahi's text/contrast settings.
+- Open external destinations in a new tab/window with `target="_blank"` and `rel="noopener noreferrer"`; include accessible text such as “Opens the newspaper website”.
+- Keep the link list available offline. Curate and verify URLs before release, and avoid embedding third-party news pages inside Agahi.
 
 ### Bill explainer
 

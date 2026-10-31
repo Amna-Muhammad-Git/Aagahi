@@ -109,6 +109,20 @@ This is the shared work order for Person A (frontend/content) and Person B (back
 
 **Integration checkpoint:** accessibility/Urdu preferences work across screens and persist after reload.
 
+## Optional Chunk 5A — Newspaper website directory (P2)
+
+**Person A**
+
+- Add a small local JSON list of curated newspaper site names, short descriptions, optional Urdu labels, and URLs.
+- Make clear that opening a publisher leaves Agahi and requires internet.
+- Use safe external links; do not embed publisher pages or scrape news content.
+
+**Person B**
+
+- No backend work is needed for a link directory.
+
+**Integration checkpoint:** the list is available locally/offline; external links are clearly labelled and open safely. Defer it without affecting the core app if time is tight.
+
 ## Chunk 6 — Screen helper and questions about uploads (P1/P2)
 
 **Person A**

@@ -19,7 +19,7 @@ The API listens at `http://localhost:4000` by default. `GET /api/health` should 
 { "status": "ok", "mode": "cached" }
 ```
 
-The frontend should use `VITE_API_BASE_URL=http://localhost:4000`. Set `FRONTEND_ORIGIN` in `.env` if the frontend runs at a different origin. Cached mode is the default and does not require provider credentials. Never commit `.env` or put provider keys in frontend variables.
+The frontend runs at `http://localhost:5173` and should use `VITE_API_BASE_URL=http://localhost:4000`. These are different ports for separate services. Set `FRONTEND_ORIGIN` in `.env` if the frontend runs at a different origin. Cached mode is the default and does not require provider credentials. Never commit `.env` or put provider keys in frontend variables.
 
 ## Current routes
 
@@ -27,6 +27,6 @@ The frontend should use `VITE_API_BASE_URL=http://localhost:4000`. Set `FRONTEND
 - `GET /api/samples` — three fictional electricity, gas, and water sample bills.
 - `GET /api/glossary` — 15 bilingual glossary entries from the frontend's bundled content.
 - `GET /api/guides` — the WhatsApp and Gmail guide library from the frontend's bundled content.
-- `POST /api/extract-bill` — retrieve a cached result with JSON `{ "sample_id": "electricity-001" }`.
+- `POST /api/extract-bill` — retrieve a cached result with JSON `{ "sample_id": "electricity-001" }`, or validate an in-memory PDF/JPG/PNG upload up to 5 MB. Valid arbitrary uploads return `mode_unavailable` until live extraction is implemented.
 
-Guide and glossary JSON live in `../Frotend/src/data/` so the frontend can bundle them and work offline. Keep the frontend folder in the repository/deployment. Upload handling and the remaining routes will be added in following implementation chunks. See [the backend handoff](BACKEND_HANDOFF.md) for the full shared API contract.
+Guide and glossary JSON live in `../Frotend/src/data/` so the frontend can bundle them and work offline. Keep the frontend folder in the repository/deployment. Uploads use memory storage only and are not written to disk or logged. See [the backend handoff](BACKEND_HANDOFF.md) for the full shared API contract.

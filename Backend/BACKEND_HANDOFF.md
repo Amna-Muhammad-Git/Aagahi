@@ -163,11 +163,15 @@ Validation/errors:
 | HTTP | `error` | When |
 |---|---|---|
 | 400 | `missing_input` | Neither `file` nor `sample_id` supplied |
-| 400 | `invalid_file_type` | Not PDF, JPEG, or PNG |
+| 400 | `invalid_file_type` | Not PDF, JPEG, or PNG, or the MIME type does not match the file signature |
+| 400 | `empty_file` | Uploaded file has no contents |
+| 400 | `conflicting_input` | Both `file` and `sample_id` supplied |
+| 400 | `invalid_upload_field` | More than one file or the file field name is not `file` |
+| 400 | `invalid_upload` | Multipart form is malformed or exceeds text-field limits |
 | 413 | `file_too_large` | Over 5 MB |
 | 404 | `sample_not_found` | Unknown `sample_id` |
 | 422 | `unreadable` | Valid upload could not be safely parsed or validated |
-| 503 | `mode_unavailable` | Live upload requested while only cached mode is available |
+| 503 | `mode_unavailable` | Valid arbitrary upload received before live extraction is available |
 | 500 | `server_error` | Unexpected failure; safe generic message only |
 
 The plan specifies `{ "error": "unreadable" }` for unparseable AI output; the common `message` field is added here to keep UI errors friendly and consistent. Frontend should branch on `error`, not parse message text.
