@@ -11,6 +11,8 @@ This is the shared contract for Person A (frontend/content) and Person B (backen
 - Account numbers are masked before any provider call and in every API response. Return only the last four digits, e.g. `••••1234`.
 - Unknown or unreadable fields must be `null` with a plain-language explanation. Never guess, give payment advice, or expose raw model output or HTML.
 - AI-derived values must be labelled as estimates by the frontend. The backend should identify their source with `provider` and `mode`.
+- The product should feel professional and dignified. Accessibility for older adults means readable type, clear steps, and predictable controls—not childish visuals, language, or assumptions about ability.
+- WhatsApp and email guidance should cover common everyday tasks. Users can ask follow-up questions about guides by typing or speaking; voice input is converted to a question and answered with the same safe support service.
 
 ## 2. Ownership and agreed layout
 
@@ -175,20 +177,38 @@ Success (`200`):
 
 `steps` must contain 3–5 short strings. `confidence` is `high`, `medium`, or `low`. For uncertain screens, say so in `description`/steps and suggest asking a trusted family member. Never instruct the user to disclose a password, OTP, or PIN. Use the same upload and error rules as bill extraction; unknown sample IDs return 404.
 
+### `POST /api/ask-about-upload` (contextual bill/screenshot questions)
+
+The user may upload a bill, photo, or screenshot and ask a question about what is visible. This is separate from general Agahi support chat: it answers about the supplied content only. Accept JSON `{ "sample_id": "electricity-001", "question": "What does previous balance mean?" }` for a cached example or multipart fields `file` and `question` for an upload. Supported files are PDF/JPEG/PNG, up to 5 MB; image and screenshot support is required. Keep uploads in memory for this request only.
+
+Success (`200`):
+
+```json
+{
+  "answer": "Previous balance is an amount carried over from an earlier bill. This sample shows none. Check the original bill to confirm.",
+  "confidence": "high",
+  "mode": "cached",
+  "safety_note": "This explanation may be wrong. Check the original bill or screen before acting."
+}
+```
+
+Answer only what can be supported by the supplied file/sample. If not visible or unclear, say so; never guess, give payment advice, or ask the user to share credentials, OTPs, or PINs. Return plain text only. Validate answer length and shape; never expose provider text on parsing failures. Cached mode supports a small set of curated suggested questions for the three sample bills and two sample screenshots. For arbitrary questions with no cached answer, return `503 mode_unavailable` rather than implying an answer was generated. Live answers use the configured Grok or Gemini adapter only when live mode is enabled.
+
 ## 5. Data files and validation
 
 - `samples.json`: three fake sample bills, each with stable `id`, field values, and explanations.
 - `sample-results.json`: cached extraction result keyed by the same sample IDs. Keep it structurally identical to the success response.
 - `screen-results.json`: two cached screen outputs keyed by stable screenshot IDs.
+- `question-results.json`: curated cached answers keyed by sample ID and suggested question ID; these power offline suggested questions.
 - `glossary.json`: exactly 15 entries with English definition and optional Urdu fields.
 - Validate all JSON at startup (or validate on read) and fail clearly if shipped cache data is malformed. Validate provider output against an explicit schema before responding.
 - Strip tags/control characters or reject unexpected non-string content; frontend also renders as text, never HTML.
 - Account masking: normalize a detected account number, retain only its last four digits, and discard the full value before constructing the response. Do not put full values in logs or cache.
 
-## 6. Live Claude mode and privacy
+## 6. Live AI mode and privacy
 
 - `USE_CACHE=true` is the default. When true, API keys are not needed and no provider request is made.
-- `USE_CACHE=false` enables live bill extraction only if `ANTHROPIC_API_KEY` is present and the configured model is available. Keep the model in `CLAUDE_MODEL`; the development plan names `claude-sonnet-5-5`, so verify availability before relying on live mode. Cached behavior remains the acceptance/demo path.
+- `USE_CACHE=false` enables live AI only when `AI_PROVIDER` is `grok` or `gemini`, the matching server-side key is present, and the configured model is available. Set the model with `AI_MODEL`. Keep provider access behind a small adapter so the frontend contract does not depend on which provider is selected. Cached behavior remains the acceptance/demo path.
 - Never put provider keys in frontend variables (`VITE_*`), source control, API responses, or logs. Commit `.env.example` with placeholders only; ignore `.env`.
 - Prompt instructions: return JSON only; no guessing; use `null` if not clearly visible; mask account number to last four only; no payment advice. Validate parsed JSON; on failure return `422 unreadable` and never return raw model output.
 - For PDFs, prefer extracting text in memory with `pdf-parse`; for images, resize/normalize in memory with Sharp. Do not persist temporary files. If preprocessing fails, return `422 unreadable`.
@@ -202,8 +222,10 @@ Person B supplies `Backend/.env.example` with:
 ```dotenv
 PORT=4000
 USE_CACHE=true
-ANTHROPIC_API_KEY=
-CLAUDE_MODEL=claude-sonnet-5-5
+AI_PROVIDER=
+AI_MODEL=
+GEMINI_API_KEY=
+GROK_API_KEY=
 FRONTEND_ORIGIN=http://localhost:5173
 ```
 
@@ -216,6 +238,7 @@ Person B documents install/start commands in `Backend/README.md` and the root RE
 - Uploads use `FormData` field `file`; show a progress/loading state, then render only returned fields and explanations. `null` fields display **“Not found on this bill”**.
 - Render `account_number` exactly as returned; never reconstruct or reveal hidden digits. Show the required note that AI estimates can be wrong and users should check the original bill.
 - Screen helper submits a known `sample_id` for cached demos or an uploaded screenshot for live mode. Show the safety note and label recreated WhatsApp/Gmail screens as mocks in guide flows.
+- Offer suggested questions for a selected bill or screenshot and send them to `/api/ask-about-upload`; accept a file plus the user's own question when live mode is available. Clearly identify cached suggested answers versus live AI answers.
 - The frontend remains usable for guides, privacy, settings, and cached sample content when live mode or the backend provider is unavailable. Do not call AI for WhatsApp/Gmail guide steps.
 - On API errors, map stable error codes to friendly copy and provide a retry action where appropriate. Do not show raw server messages unless reviewed as user-safe.
 
@@ -224,6 +247,7 @@ Person B documents install/start commands in `Backend/README.md` and the root RE
 - Person A can run the frontend with the documented API base URL and no provider credentials.
 - Health reports `cached`; samples returns exactly three; glossary returns exactly 15.
 - Every sample ID returns the matching cached extraction object; both screen IDs return a 3–5 step result.
+- Suggested questions about cached bills/screens return safe answers; unsupported arbitrary questions in cached mode show an unavailable/retry message.
 - Empty, wrong-type, and >5 MB uploads return stable friendly errors without crashing the server.
 - Live extraction is disabled by default; when enabled, API key stays server-only and malformed/provider-failed output never leaks.
 - No upload body logging, persisted user upload, full account number in response/cache/log, or committed `.env`/secret.
@@ -236,20 +260,21 @@ Person B documents install/start commands in `Backend/README.md` and the root RE
 3. Implement cached extraction and screen helper routes and stable errors.
 4. Give Person A the base URL, sample IDs, glossary shape, and example responses as soon as they are stable.
 5. Add upload validation, in-memory handling, size/type errors, and safe logging defaults.
-6. Add Claude live mode behind `USE_CACHE=false`; validate provider JSON and mask data before response.
+6. Add Grok or Gemini live mode behind `USE_CACHE=false`; validate provider JSON and mask data before response.
 7. Complete backend README/setup notes and the integration-ready checklist. Freeze live mode if it is not stable; submit with cached mode.
 
 ## 11. Revised scope: support chatbot and voice agent
 
-The original development plan listed chatbot and voice agent as cut/out-of-scope. The team has now added them back into the intended product scope. Treat this as a scope change and schedule these after the bill, guides, privacy, and cached backend paths work. Keep both assistants focused on teaching people how to use Agahi and common digital tasks; neither may take actions for the user or ask for passwords, OTPs, or PINs.
+The original development plan listed chatbot and voice agent as cut/out-of-scope. The team has now added them back into the intended product scope. Treat this as a scope change and schedule these after the bill, guides, privacy, and cached backend paths work. Keep both assistants focused on teaching people how to use Agahi, bills, WhatsApp, and email; neither may take actions for the user or ask for passwords, OTPs, or PINs.
 
 Before implementation, Person A and Person B must agree on: what questions the support chatbot answers, what the voice agent can teach, supported languages (English/Urdu), whether speech runs in the browser or through a server provider, the chosen provider, and the demo's offline behavior. Do not expose provider keys in the browser. Until that is agreed, keep the endpoints below as proposed names, not a locked contract.
 
-Proposed minimal API shape if the agent runs through the backend:
+Proposed minimal API shape if the support agent runs through the backend:
 
-- `POST /api/support/chat`: JSON `{ "message": "...", "history": [] }`; response `{ "reply": "...", "mode": "cached" | "live" }`.
+- `POST /api/support/chat`: JSON `{ "message": "...", "guide_id": "whatsapp-send-photo", "language": "en" }`; response `{ "reply": "...", "related_guide_ids": [], "mode": "cached" | "live" }`. `guide_id` and `language` are optional. Voice speech-to-text transcripts use the same `message` field as typed questions.
 - `POST /api/voice/session`: create a short-lived session or return safe session configuration; never return a permanent provider secret. Exact request/response depends on the chosen voice provider.
 - If voice is browser-local, the backend may only need a short-lived token route. Do not stream audio through Express unless the selected provider and available time make that necessary.
+- For the first voice-query version, prefer browser speech recognition where available, send only the transcript to `/api/support/chat`, then read the answer with speech synthesis. Provide visible text and typing fallbacks when speech is unsupported or microphone permission is denied.
 - Add `USE_CACHE=true` behavior for demo responses, provider timeouts, input length limits, and friendly safe errors. Do not store transcripts/audio or log request bodies by default.
 
 ## 12. Backend tasks divided into chunks
@@ -290,7 +315,7 @@ Each chunk should end with working behavior that Person A can integrate. Share t
 
 ### Chunk 5 — Live bill extraction (optional, after core)
 
-- Integrate Claude behind `USE_CACHE=false` and server-only environment key.
+- Integrate Grok or Gemini behind `USE_CACHE=false` and server-only environment key.
 - Preprocess PDFs/images in memory; send only what is necessary.
 - Validate model JSON, normalize values, mask account number before response, reject guesses, and never expose raw model text.
 - Handle timeout/provider failure with safe errors; cached mode remains the default.

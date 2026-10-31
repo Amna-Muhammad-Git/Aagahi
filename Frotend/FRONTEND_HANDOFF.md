@@ -1,6 +1,10 @@
 # Agahi frontend handoff
 
-This guide is for Person A building the React/Vite frontend alongside Person B's Express backend. The backend contract and full response examples are in the root `BACKEND_HANDOFF.md` file. Follow the API shapes below so both sides can work independently and integrate cleanly.
+This guide is for Person A building the React/Vite frontend alongside Person B's Express backend. The backend contract and full response examples are in `Backend/BACKEND_HANDOFF.md`. Follow the API shapes below so both sides can work independently and integrate cleanly.
+
+## Visual and interaction direction
+
+Make Agahi feel like a polished, trustworthy product for adults. Older-adult-friendly means readable typography, clear hierarchy, generous spacing, predictable navigation, visible focus/touch states, and plain respectful language. Avoid childish illustrations, cartoonish styling, patronizing copy, or assuming users cannot learn. Keep the interface calm and professional while maintaining the required large controls and accessibility options.
 
 ## Product goal
 
@@ -12,7 +16,7 @@ Person A owns:
 
 - React app shell, routing, Home, Settings, and Privacy screens.
 - Bill upload/sample selection, result cards, and glossary bottom sheet.
-- Guide list and step view, including WhatsApp (4 guides) and Gmail attachment guide content.
+- Searchable guide library for common WhatsApp and email tasks, with text and voice follow-up questions.
 - Recreated WhatsApp/Gmail mock screens. Label them clearly as mock screens; they are not the real apps.
 - Text size, high contrast, Urdu fonts, responsive behavior, and large controls.
 - Frontend README section and demo recording support.
@@ -38,6 +42,7 @@ Do not commit local `.env` files. The frontend must work without an AI key. Use 
 | GET | `/api/glossary` | Load 15 glossary entries (English and optional Urdu); additive route agreed by both people |
 | POST | `/api/extract-bill` | Submit a sample ID or a bill upload |
 | POST | `/api/explain-screen` | Submit one of the cached screenshot IDs or an uploaded screenshot |
+| POST | `/api/ask-about-upload` | Ask a question about a selected bill/screenshot or uploaded file (live mode for arbitrary questions; curated cached questions offline) |
 
 All routes use the base URL above. Uploads use `FormData` with the field name `file`; do not manually set the `Content-Type` header because the browser supplies the multipart boundary. Cached sample requests may send JSON `{ "sample_id": "electricity-001" }`; backend also accepts `sample_id` as a multipart text field.
 
@@ -105,6 +110,21 @@ Urdu values may be absent. Fall back to English when missing. Glossary and guide
 
 Show the 3–5 steps clearly, include the safety note, and be honest when the helper is uncertain. Do not use raw HTML from API content.
 
+### Ask about a bill or screenshot
+
+Allow the user to select/upload a bill, photo, or screenshot and ask a question about its visible content. Use suggested questions for cached samples so this path has a reliable offline demo. For example, submit JSON `{ "sample_id": "electricity-001", "question": "What does previous balance mean?" }` or multipart fields `file` and `question` for an uploaded file.
+
+```json
+{
+  "answer": "Previous balance is an amount carried over from an earlier bill. This sample shows none. Check the original bill to confirm.",
+  "confidence": "high",
+  "mode": "cached",
+  "safety_note": "This explanation may be wrong. Check the original bill or screen before acting."
+}
+```
+
+Clearly label cached suggested answers and live AI answers. If an arbitrary question cannot be answered in cached mode, show the safe unavailable message and preserve the uploaded item/question for retry only as long as appropriate; do not claim analysis occurred. Never encourage payment, guessing, or sharing passwords, OTPs, or PINs. Uploaded content is request-only and must not be persisted.
+
 ## Error handling
 
 Errors have a stable code, usually `{ "error": "unreadable", "message": "We couldn't read this file. Try another clear photo or sample bill." }`.
@@ -133,6 +153,7 @@ Uploads are limited to 5 MB. Disable repeated submit while a request is pending,
 
 - Let the user pick one of the three sample bills or upload a PDF/JPG/PNG.
 - Display fields with plain-language explanation cards.
+- Let users ask follow-up questions about the bill or an uploaded bill image; include a few suggested questions for cached sample bills.
 - Masked account number must remain masked everywhere.
 - Unknown fields say “Not found on this bill”.
 - Display an AI estimate / verify against original bill note.
@@ -146,17 +167,25 @@ Uploads are limited to 5 MB. Disable repeated submit while a request is pending,
 
 ### Guides
 
-- WhatsApp: video call, voice message, share location, and send a file/photo.
-- Gmail: attachment guide covering compose, paperclip, choose file, confirm attachment, and send.
+- Provide an organized library of common WhatsApp and email tasks, not only isolated demo guides. Prioritize WhatsApp messages, voice messages, photos/files, calls, location sharing, finding chats, and basic privacy controls; prioritize Gmail compose, send, reply, forward, find messages, attach/download files, and identify suspicious/spam email.
+- Keep the hackathon's four WhatsApp guides (video call, voice message, share location, send file/photo) and Gmail attachment guide as the first complete set, then add common tasks as time allows.
 - Each guide has 4–7 steps, one action per step, Back/Next controls, and “Step X of Y”.
 - First and last steps have correct disabled/finish behavior. Guide progression never calls AI.
 - Screens are recreated mocks; visibly disclose that they are not live WhatsApp/Gmail screens.
+- Add “Ask a question” from guide pages. Questions may be typed or spoken; include the current `guide_id` as context where relevant and display the answer as text even when speech is used.
 
 ### Screen helper (if time allows)
 
 - Support the two cached screenshot examples first.
 - Live upload analysis is optional and must not block the core app.
 - Include a warning never to share passwords, OTPs, or PINs shown on screen.
+- Let users ask a follow-up question about the screenshot; cached samples support curated suggested questions, and arbitrary questions require live mode.
+
+### Voice questions
+
+- Let users speak questions about bills, screenshots, WhatsApp, email, or the current guide. For the initial browser-based path, convert speech to text, send the transcript to `/api/support/chat` (include the current guide ID when relevant), and optionally read the answer aloud.
+- Display the recognized question and answer so the user can correct a misheard question. Provide typing/text fallback if speech recognition is unsupported or microphone permission is denied.
+- The assistant teaches and explains; it never opens apps, sends messages, changes settings, pays bills, or requests passwords, OTPs, or PINs.
 
 ### Privacy
 
@@ -186,6 +215,7 @@ Coordinate whenever a response field or route needs to change; update the shared
 - [ ] App shell and required routes/screens work on a phone-sized viewport.
 - [ ] Three sample bills load and render, including `null` field handling and estimate note.
 - [ ] Upload accepts PDF/JPG/PNG, handles 5 MB/type/unreadable errors, and offers retry.
+- [ ] User can ask about the selected bill/screenshot; cached suggested questions work offline and unsupported cached questions are labelled unavailable.
 - [ ] Account number is displayed only in the masked form supplied by the API.
 - [ ] Glossary bottom sheet opens/closes and uses English fallback for missing Urdu.
 - [ ] Four WhatsApp guides and Gmail guide work offline with 4–7 steps and accurate step count.
