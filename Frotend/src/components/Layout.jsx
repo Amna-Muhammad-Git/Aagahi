@@ -18,6 +18,7 @@ export default function Layout() {
                         <NavLink to="/">Home</NavLink>
                         <NavLink to="/bills">Bills</NavLink>
                         <NavLink to="/guides">Guides</NavLink>
+                        <NavLink to="/screen-helper">Upload Screen</NavLink>
                         <NavLink to="/ask">Ask</NavLink>
                         <NavLink to="/privacy">Privacy</NavLink>
                         <NavLink to="/settings">Settings</NavLink>

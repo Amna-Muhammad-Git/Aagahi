@@ -1,0 +1,34 @@
+{
+  "whatsapp-location-001": {
+    "app_name": "WhatsApp",
+    "description": "This screen is asking you to choose a person to share your location with.",
+    "steps": [
+      "Check the name at the top of the chat so you know who you are talking to.",
+      "Choose Send your current location for a one-time share, or Share live location to share while you move.",
+      "Only continue if you want that person to see your location."
+    ],
+    "confidence": "high",
+    "safety_note": "Never share a password, one-time code (OTP), or PIN shown on a screen.",
+    "mode": "builtin",
+    "questions": [
+      { "text": "What is this screen asking me to do?", "answer": "It is showing location-sharing choices. You can send your current location once or share it live for a period of time." },
+      { "text": "What should I check before I continue?", "answer": "Check the chat name and make sure you want that person to know your location." }
+    ]
+  },
+  "gmail-attachment-001": {
+    "app_name": "Gmail",
+    "description": "This screen lets you write a new email and add the recipient and subject.",
+    "steps": [
+      "Check the recipient address carefully.",
+      "Add a short subject that describes your email.",
+      "Use the paperclip icon when you are ready to choose a file to attach."
+    ],
+    "confidence": "medium",
+    "safety_note": "Never share a password, one-time code (OTP), or PIN shown on a screen.",
+    "mode": "builtin",
+    "questions": [
+      { "text": "What is this screen asking me to do?", "answer": "It is a new email. You can enter who it is for and a subject before writing your message." },
+      { "text": "What should I check before I continue?", "answer": "Check the recipient address and make sure you selected the right file before sending." }
+    ]
+  }
+}

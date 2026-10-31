@@ -2024,3 +2024,92 @@ p {
 [data-contrast="high"] .hero {
   border-bottom: 2px solid #fff;
 }
+
+/* ---------- Screen helper sample cards ---------- */
+.screen-samples {
+  display: grid;
+  gap: 1.5rem;
+  margin: 1rem 0 2.5rem;
+}
+
+@media (min-width: 800px) {
+  .screen-samples {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.screen-samples>.reveal {
+  display: flex;
+}
+
+.screen-sample {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  background: var(--band);
+  border: 2px solid transparent;
+  border-radius: 24px;
+  padding: 1.5rem;
+  transition: transform .3s, box-shadow .3s, border-color .3s;
+}
+
+.screen-sample:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow);
+}
+
+.screen-sample.selected {
+  border-color: var(--accent);
+  background: var(--surface);
+}
+
+[data-contrast="high"] .screen-sample {
+  border-color: #fff;
+}
+
+.screen-sample h3 {
+  font-size: 1.35rem;
+  text-align: center;
+  margin: 0;
+}
+
+.screen-sample-stage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.screen-sample .phone {
+  width: 250px;
+  min-height: 380px;
+}
+
+.screen-sample .btn {
+  width: 100%;
+  max-width: 300px;
+}
+
+/* stops the Gmail header icons being cut off */
+.m-head {
+  gap: .4rem;
+  padding: .7rem .75rem;
+}
+
+.m-head strong {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.m-actions {
+  flex: none;
+}
+
+.m-head .m-icon {
+  width: 34px;
+  height: 34px;
+}

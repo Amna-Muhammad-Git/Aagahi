@@ -3,7 +3,9 @@ const TIMEOUT_MS = 12000;
 
 export const ERROR_COPY = {
     missing_input: "Please choose a sample bill or a file first.",
-    invalid_file_type: "Agahi can read PDF, JPG and PNG files only.",
+    invalid_file_type: "Aagahi can read PDF, JPG and PNG files only.",
+    screen_invalid_file_type: "Please choose a PNG or JPEG screenshot.",
+    screen_file_empty: "That file is empty. Please choose another one.",
     file_too_large: "That file is bigger than 5 MB. Please choose a smaller one.",
     sample_not_found: "That sample is not available right now. Please pick another one.",
     unreadable: "We couldn't read this file. Try a clearer photo or a sample bill.",
@@ -11,7 +13,7 @@ export const ERROR_COPY = {
     provider_unavailable: "The reading service is busy. Please try again in a moment.",
     message_too_long: "That question is too long. Please make it shorter.",
     server_error: "Something went wrong on our side. Please try again.",
-    network: "We can't reach the Agahi server. Samples and guides still work.",
+    network: "We can't reach the Aagahi server. Samples and guides still work.",
     timeout: "This is taking too long. Please try again.",
 };
 

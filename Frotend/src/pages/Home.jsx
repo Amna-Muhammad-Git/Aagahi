@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
-import { Receipt, Video, Mic, MapPin, Paperclip, MessageCircle, ChevronRight, ShieldCheck } from "lucide-react";
+import { Receipt, Video, Mic, MapPin, Paperclip, MessageCircle, ChevronRight, ShieldCheck, ScanSearch } from "lucide-react";
 import Reveal from "../components/Reveal";
 
 const hide = (e) => { e.currentTarget.style.display = "none"; };
 
 const tasks = [
     { to: "/bills", label: "Explain a bill", Icon: Receipt },
+    { to: "/screen-helper", label: "Explain a screenshot", Icon: ScanSearch },
     { to: "/guides/whatsapp-video-call", label: "Make a WhatsApp video call", Icon: Video },
     { to: "/guides/whatsapp-voice-message", label: "Send a voice message", Icon: Mic },
     { to: "/guides/whatsapp-share-location", label: "Share your location", Icon: MapPin },
