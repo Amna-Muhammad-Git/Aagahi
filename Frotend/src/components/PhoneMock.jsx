@@ -43,11 +43,7 @@ export default function PhoneMock({ screen, hl }) {
                     </div>
                 )}
             </div>
-<<<<<<< HEAD
-            <figcaption>Illustration of the {appName} screen</figcaption>
-=======
             <figcaption><UiText k="mock_screen_caption" english={`Mock screen: a simplified drawing, not the real ${appName} app.`} /></figcaption>
->>>>>>> 2af2900 (Add Urdu Language feature)
         </figure>
     );
 }
