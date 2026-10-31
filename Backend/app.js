@@ -6,6 +6,7 @@ const sampleResults = require("./data/sample-results.json");
 const screenResults = require("./data/screen-results.json");
 const questionResults = require("./data/question-results.json");
 const supportResponses = require("./data/support-responses.json");
+const { extractLiveBill, getProviderChain, ProviderFailure, UnsafeProviderOutput } = require("./ai-providers");
 const guideContent = require("../Frotend/src/data/guides.json");
 const guides = Array.isArray(guideContent) ? guideContent : guideContent.guides;
 const glossary = require("../Frotend/src/data/glossary.json");
@@ -191,14 +192,7 @@ function createApp() {
   const frontendOrigin = process.env.FRONTEND_ORIGIN || "http://localhost:5173";
 
   function getMode() {
-    if (process.env.USE_CACHE !== "false") return "cached";
-
-    const provider = process.env.AI_PROVIDER;
-    const hasProviderKey =
-      (provider === "grok" && Boolean(process.env.GROK_API_KEY)) ||
-      (provider === "gemini" && Boolean(process.env.GEMINI_API_KEY));
-
-    return hasProviderKey ? "live" : "cached";
+    return getProviderChain().length ? "live" : "cached";
   }
 
   app.disable("x-powered-by");
@@ -292,7 +286,7 @@ function createApp() {
     });
   });
 
-  app.post("/api/extract-bill", upload.single("file"), (req, res) => {
+  app.post("/api/extract-bill", upload.single("file"), async (req, res) => {
     const sampleId = req.body?.sample_id;
 
     if (req.file && sampleId) {
@@ -317,10 +311,32 @@ function createApp() {
         });
       }
 
-      return res.status(503).json({
-        error: "mode_unavailable",
-        message: "Live bill reading is not available yet. You can choose a sample bill instead.",
-      });
+      if (process.env.USE_CACHE !== "false") {
+        return res.status(503).json({
+          error: "mode_unavailable",
+          message: "Live bill reading is turned off. You can choose a sample bill instead.",
+        });
+      }
+
+      try {
+        const result = await extractLiveBill(req.file, {
+          onProviderFailure: (details) => {
+            console.warn("[Agahi AI] Provider attempt failed.", JSON.stringify(details));
+          },
+        });
+        return res.json(result);
+      } catch (error) {
+        if (error instanceof UnsafeProviderOutput) {
+          return res.status(422).json({
+            error: "bill_unclear",
+            message: "We could not read the amount clearly. Check the original bill or try a clearer photo.",
+          });
+        }
+        return res.status(503).json({
+          error: "provider_unavailable",
+          message: "Bill reading is unavailable right now. Try again later or practise with a sample bill.",
+        });
+      }
     }
 
     if (typeof sampleId !== "string" || sampleId.trim() === "") {
@@ -492,6 +508,33 @@ function createApp() {
   });
 
   app.use((err, _req, res, _next) => {
+    const safeErrorCodes = new Set([
+      "EACCES",
+      "EADDRINUSE",
+      "ECONNRESET",
+      "ENOTFOUND",
+      "ERR_HTTP_HEADERS_SENT",
+      "LIMIT_FIELD_COUNT",
+      "LIMIT_FIELD_SIZE",
+      "LIMIT_FILE_COUNT",
+      "LIMIT_FILE_SIZE",
+      "LIMIT_UNEXPECTED_FILE",
+      "entity.parse.failed",
+      "entity.too.large",
+    ]);
+    console.error("[Agahi API] Unhandled request error.", JSON.stringify({
+      path: _req.path,
+      name: typeof err?.name === "string" ? err.name : "Error",
+      code: safeErrorCodes.has(err?.code) ? err.code : null,
+    }));
+
+    if (err instanceof ProviderFailure) {
+      return res.status(503).json({
+        error: "provider_unavailable",
+        message: "Bill reading is unavailable right now. Try again later or practise with a sample bill.",
+      });
+    }
+
     if (err.code === "invalid_file_type") {
       return res.status(400).json({
         error: "invalid_file_type",

@@ -104,7 +104,7 @@ export default function Home() {
                         <div className="alert" role="note">
                             <ShieldCheck aria-hidden="true" />
                             <div>
-                                <strong>Your privacy matters.</strong> Uploads are used only to answer your request and are not saved.{" "}
+                                <strong>Your privacy matters.</strong> Aagahi does not save uploads. In live mode, files are sent to an AI provider to answer your request.{" "}
                                 <Link to="/privacy">Read how Agahi handles your data</Link>.
                             </div>
                         </div>

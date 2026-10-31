@@ -27,7 +27,7 @@ const FAQ = [
         q: "What happens to a bill I upload?",
         a: [
             "Your file is held in the server's memory only while your request is being answered. It is not written to disk, and it is discarded once you get your answer.",
-            "Account numbers are hidden before anything is read by AI, and Aagahi only ever shows the last four digits, like ••••1234.",
+            "In live mode, the bill image is sent to the selected AI provider, which may receive the full account number printed on it. Agahi may show the number read from your bill so you can check it when paying. The upload is not kept. Compare the number with your original bill before paying, and do not upload a bill unless you are comfortable sharing it with that provider.",
         ],
     },
     {

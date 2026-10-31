@@ -102,7 +102,7 @@ export default function Bills() {
                         {loading ? "Reading your bill…" : "Explain this bill"}
                     </button>
                 </div>
-                <p className="muted">Your file is used for this request only and is not saved.</p>
+            <p className="muted">In live mode, your file is sent to an AI provider for reading. Aagahi does not save it. Check Privacy before uploading a bill with personal details.</p>
 
                 {error && (
                     <div className="error" role="alert">

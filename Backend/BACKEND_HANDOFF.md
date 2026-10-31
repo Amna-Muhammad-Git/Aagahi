@@ -8,7 +8,7 @@ This is the shared contract for Person A (frontend/content) and Person B (backen
 - Cached mode is the reliable demo mode and must not require an AI provider or network connection.
 - Uploaded bills and screenshots are held in memory for the request only. Do not write uploads to disk, retain them, or log their contents.
 - Never collect accounts, contacts, passwords, OTPs, PINs, or analytics. Do not log request bodies.
-- Account numbers are masked before any provider call and in every API response. Return only the last four digits, e.g. `••••1234`.
+- Uploaded bill images may contain the full account number and are sent to the selected AI provider for extraction. Do not log or retain it. Live extraction returns the number as read so the user can check it while paying; cached demo bills use fictional, masked numbers.
 - Unknown or unreadable fields must be `null` with a plain-language explanation. Never guess, give payment advice, or expose raw model output or HTML.
 - AI-derived values must be labelled as estimates by the frontend. The backend should identify their source with `provider` and `mode`.
 - The product should feel professional and dignified. Accessibility for older adults means readable type, clear steps, and predictable controls—not childish visuals, language, or assumptions about ability.
@@ -95,7 +95,7 @@ Returns the three fake sample bills. Keep the object structure identical to the 
       "amount_due": "The amount the bill says is due. Check the original bill before paying.",
       "due_date": "The date printed as the payment deadline.",
       "billing_period": "The period covered by this bill.",
-      "account_number": "Only the last four digits are shown for privacy.",
+      "account_number": "A fictional sample account number, masked for the demo.",
       "previous_balance": "No previous unpaid balance was listed.",
       "late_fee": "Not found on this bill."
     },
@@ -146,7 +146,7 @@ Success (`200`) has the same field structure as a sample object, plus an optiona
   "amount_due": { "value": 8420, "currency": "PKR" },
   "due_date": "2026-11-15",
   "billing_period": "October 2026",
-  "account_number": "••••1234",
+  "account_number": "1234567890123",
   "previous_balance": { "value": 0, "currency": "PKR" },
   "late_fee": null,
   "explanations": {
@@ -154,11 +154,11 @@ Success (`200`) has the same field structure as a sample object, plus an optiona
     "amount_due": "The amount the bill says is due. Check the original bill before paying.",
     "due_date": "The date printed as the payment deadline.",
     "billing_period": "The period covered by this bill.",
-    "account_number": "Only the last four digits are shown for privacy.",
+    "account_number": "The account number read from this bill. Check it against the original before paying.",
     "previous_balance": "No previous unpaid balance was listed.",
     "late_fee": "Not found on this bill."
   },
-  "mode": "cached"
+  "mode": "live"
 }
 ```
 
@@ -235,16 +235,16 @@ Errors: `400 missing_input`, `400 missing_question`, `400 conflicting_input`, `4
 - `Frotend/src/data/guides.json`: authored guides bundled into the frontend and served by the optional guide API route.
 - Validate all JSON at startup (or validate on read) and fail clearly if shipped cache data is malformed. Validate provider output against an explicit schema before responding.
 - Strip tags/control characters or reject unexpected non-string content; frontend also renders as text, never HTML.
-- Account masking: normalize a detected account number, retain only its last four digits, and discard the full value before constructing the response. Do not put full values in logs or cache.
+- Account handling: return a clearly read account number as printed in live extraction so the user can verify it for payment. Keep it out of logs and persistent caches; fictional cached demo examples remain masked.
 
 ## 6. Live AI mode and privacy
 
 - `USE_CACHE=true` is the default. When true, API keys are not needed and no provider request is made.
-- `USE_CACHE=false` enables live AI only when `AI_PROVIDER` is `grok` or `gemini`, the matching server-side key is present, and the configured model is available. Set the model with `AI_MODEL`. Keep provider access behind a small adapter so the frontend contract does not depend on which provider is selected. Cached behavior remains the acceptance/demo path.
+- `USE_CACHE=false` enables live bill extraction only when the selected `AI_PROVIDER` and its server-side key are configured. Supported providers are `gemini`, `groq` (GroqCloud), and `grok` (xAI); provider names and keys must match (`groq` uses `GROQ_API_KEY`, `grok` uses `GROK_API_KEY`). Set the model with `AI_MODEL`. An optional `AI_FALLBACK_PROVIDER`/`AI_FALLBACK_MODEL` selects the second provider; if omitted, Gemini prefers configured GroqCloud and then xAI Grok. Provider request failures can fail over once, but malformed/uncertain output is rejected without another model attempt.
 - Never put provider keys in frontend variables (`VITE_*`), source control, API responses, or logs. Commit `.env.example` with placeholders only; ignore `.env`.
-- Prompt instructions: return JSON only; no guessing; use `null` if not clearly visible; mask account number to last four only; no payment advice. Validate parsed JSON; on failure return `422 unreadable` and never return raw model output.
+- Prompt instructions: return JSON only; no guessing; use `null` if not clearly visible; return the account number as printed so the user can verify it for payment; no payment advice. The source bill may contain a full account number and is sent to the configured provider. Validate parsed JSON; on failure return a safe review error and never return raw model output.
 - For PDFs, prefer extracting text in memory with `pdf-parse`; for images, resize/normalize in memory with Sharp. Do not persist temporary files. If preprocessing fails, return `422 unreadable`.
-- Set provider timeout and a small output-token limit. Provider outages/timeouts return a safe `503` error; the frontend should offer retry and keep sample/cached paths usable.
+- Keep provider timeouts short and the frontend request timeout long enough for one fallback attempt. GroqCloud uses its Qwen vision model for JPG/PNG fallback; it does not accept PDFs through this adapter. xAI Grok images are sent inline; PDF uploads request one-hour expiry and are deleted after use. Provider outages/timeouts return a safe `503` error; logs may include provider name, stage, category, status, and whitelisted error hints only. The frontend should offer retry and keep sample/cached paths usable. A custom upload must never be replaced with an unrelated cached sample.
 - Screen AI is optional. Cached screen results meet the requirement; only add live screenshot analysis after cached flows work.
 
 ## 7. Environment and local run agreement
@@ -256,7 +256,10 @@ PORT=4000
 USE_CACHE=true
 AI_PROVIDER=
 AI_MODEL=
+AI_FALLBACK_PROVIDER=
+AI_FALLBACK_MODEL=
 GEMINI_API_KEY=
+GROQ_API_KEY=
 GROK_API_KEY=
 FRONTEND_ORIGIN=http://localhost:5173
 ```
@@ -268,7 +271,7 @@ Person B documents install/start commands in `Backend/README.md` and the root RE
 - At app start, call `/api/health` for mode and `/api/samples` for sample choices. Fetch `/api/glossary` for glossary content. Keep a clear loading and friendly error state.
 - A selected sample can render from the sample list; if Person A chooses to request the extraction route, send its `sample_id` and render the returned object.
 - Uploads use `FormData` field `file`; show a progress/loading state, then render only returned fields and explanations. `null` fields display **“Not found on this bill”**.
-- Render `account_number` exactly as returned; never reconstruct or reveal hidden digits. Show the required note that AI estimates can be wrong and users should check the original bill.
+- Render `account_number` exactly as returned. Live uploads may show the full number read from the user's own bill so they can verify it for payment; cached fictional sample bills remain masked. Show the required note that AI estimates can be wrong and users should check the original bill.
 - Screen helper submits a known `sample_id` for cached demos or an uploaded screenshot for live mode. Show the safety note and label recreated WhatsApp/Gmail screens as mocks in guide flows.
 - Offer suggested questions for a selected bill or screenshot and send them to `/api/ask-about-upload`; accept a file plus the user's own question when live mode is available. Clearly identify cached suggested answers versus live AI answers.
 - The frontend remains usable for guides, privacy, settings, and cached sample content when live mode or the backend provider is unavailable. Do not call AI for WhatsApp/Gmail guide steps.
@@ -281,8 +284,8 @@ Person B documents install/start commands in `Backend/README.md` and the root RE
 - Every sample ID returns the matching cached extraction object; both screen IDs return a 3–5 step result.
 - Suggested questions about cached bills/screens return safe answers; unsupported arbitrary questions in cached mode show an unavailable/retry message.
 - Empty, wrong-type, and >5 MB uploads return stable friendly errors without crashing the server.
-- Live extraction is disabled by default; when enabled, API key stays server-only and malformed/provider-failed output never leaks.
-- No upload body logging, persisted user upload, full account number in response/cache/log, or committed `.env`/secret.
+- Live extraction is disabled by default; when enabled, API key stays server-only and malformed/provider-failed output never leaks. `groq` means GroqCloud (`GROQ_API_KEY`); `grok` means xAI (`GROK_API_KEY`).
+- No upload body logging, persisted user upload, full account number in cache/log, or committed `.env`/secret. A live response may contain the account number read from the user's uploaded bill.
 - Cached demo paths require no network call to an AI provider.
 
 ## 10. Person B delivery order
@@ -292,7 +295,7 @@ Person B documents install/start commands in `Backend/README.md` and the root RE
 3. Implement cached extraction and screen helper routes and stable errors.
 4. Give Person A the base URL, sample IDs, glossary shape, and example responses as soon as they are stable.
 5. Add upload validation, in-memory handling, size/type errors, and safe logging defaults.
-6. Add Grok or Gemini live mode behind `USE_CACHE=false`; validate provider JSON and mask data before response.
+6. Add Gemini/Groq/Grok live bill extraction behind `USE_CACHE=false`; validate provider JSON, fail over only on temporary provider failures, and return a clearly read account number exactly as printed for the user's payment reference.
 7. Complete backend README/setup notes and the integration-ready checklist. Freeze live mode if it is not stable; submit with cached mode.
 
 ## 11. Revised scope: support chatbot and voice agent
@@ -371,7 +374,7 @@ Each chunk should end with working behavior that Person A can integrate. Share t
 
 - Integrate Grok or Gemini behind `USE_CACHE=false` and server-only environment key.
 - Preprocess PDFs/images in memory; send only what is necessary.
-- Validate model JSON, normalize values, mask account number before response, reject guesses, and never expose raw model text.
+- Validate model JSON, normalize values, return the account number as read for the user's verification, reject guesses, and never expose raw model text.
 - Handle timeout/provider failure with safe errors; cached mode remains the default.
 - **Ready when:** live mode passes sample checks and cached mode works without the provider. If unstable, freeze/omit live mode for the demo.
 

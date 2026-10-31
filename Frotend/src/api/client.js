@@ -1,5 +1,6 @@
 const BASE = (import.meta.env.VITE_API_BASE_URL || "http://localhost:4000").replace(/\/$/, "");
-const TIMEOUT_MS = 12000;
+// Live extraction may try the alternate provider after a short primary timeout.
+const TIMEOUT_MS = 35000;
 
 export const ERROR_COPY = {
     missing_input: "Please choose a sample bill or a file first.",
