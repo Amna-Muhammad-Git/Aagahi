@@ -31,28 +31,35 @@ export default function Home() {
         <>
             <section className="hero">
                 <div className="container">
-                    <div>
-                        <h1 className="rise" style={{ "--d": "0ms" }}>
-                            Understand your bills. Learn <span className="highlight">WhatsApp</span> and email.
+                    <div className="hero-copy">
+                        {/* <div className="brand rise" style={{ "--d": "0ms" }}>
+                            <img src="/images/logo.png" alt="" className="brand-img" onError={hide} />
+                            <span>Aagahi</span>
+                        </div> */}
+
+                        <h1 className="hero-title">
+                            <span className="line"><span className="line-in" style={{ "--i": 0 }}>Read the bill,</span></span>
+                            <span className="line"><span className="line-in" style={{ "--i": 1 }}>and learn the dial,</span></span>
+                            <span className="line"><span className="line-in" style={{ "--i": 2 }}>with <em className="brand-word">Aagahi</em></span></span>
+                            <span className="highlight"><span className="line-in" style={{ "--i": 3 }}>you’ll go the extra mile.</span></span>
                         </h1>
-                        <p className="rise" style={{ "--d": "150ms" }}>
+
+                        <p className="hero-sub rise" style={{ "--d": "900ms" }}>
                             Clear, calm steps that teach you to do it yourself. No accounts and no pressure.
                         </p>
-                        <div className="hero-actions rise" style={{ "--d": "300ms" }}>
+                        <div className="hero-actions rise" style={{ "--d": "1050ms" }}>
                             <Link className="btn btn-primary" to="/bills">Explain a bill</Link>
                             <Link className="btn btn-secondary" to="/guides">Browse guides</Link>
                         </div>
                     </div>
-                    <div className="hero-media rise" style={{ "--d": "200ms" }}>
-                        <img src="/images/hero.jpg" alt="A smiling older woman using a smartphone" onError={hide} />
-                        <div className="float-card" aria-hidden="true">
-                            <span className="dot">2</span>
-                            <div><strong>Step 2 of 5</strong><br />Tap the video icon</div>
+
+                    <div className="hero-media">
+                        <div className="hero-frame">
+                            <img src="/images/hero.jpg" alt="A smiling older man using a smartphone beside a laptop" onError={hide} />
                         </div>
                     </div>
                 </div>
             </section>
-
             <div className="container">
                 <div className="stats">
                     {stats.map(([n, label], i) => (
